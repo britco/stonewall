@@ -30,8 +30,8 @@ Rulesets are easy to create. Simply create an object with the properties as the 
 		}
 	};
 
-You can also use the array syntax. This is useful when you want to specify a custom error message:
-	
+There is also the array syntax. Use this if you want to specify a custom error message for a rule. You can do this like so:
+
 	rules = [
 		username: [
 			{
