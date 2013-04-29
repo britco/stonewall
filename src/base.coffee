@@ -1,0 +1,215 @@
+###
+ Stonewall base class
+ @author Paul Dufour
+ @company Brit + Co
+###
+
+Stonewall.Core = _.extend Stonewall,
+	###
+	 Validate a group of attributes against a Stonewall 'ruleset'
+
+	 options =
+		resource: The resource being validate. Useful for auto-populating rules.
+		attributes: The attributes you want to validate
+		ignore: List of attrs. in options.attributes that shouldn't be validated.
+		rules: The rules to validate the attrs. against
+		intersect: If intersect is on, only validate the attributes provided
+		success: Callback for when validation completes with no errors
+		error: Callback for when validate completes with errors
+	###
+	validate: (options) ->
+		attrs = options.attributes
+		ruleset = _.clone((new Stonewall.Ruleset(options.rules)).rules)
+		success = $.proxy(options.success, @) || Function.prototype
+		error = $.proxy(options.error, @) || Function.prototype
+		binder = @binder
+		binding = @
+
+		# Form the context that will be used for rule functions
+		ctx =
+			resource: options.resource
+			attributes: _.clone(attrs, true)
+			rules: rules
+
+		# Remove attrs that should be ignored
+		if options.ignore
+			for ignoreField in options.ignore
+				delete attrs[ignoreField]
+
+		# If intersection is provided, only validate the attrs. provided
+		intersection = options.intersection || false
+
+		if intersection
+			for field, rules of ruleset
+				if !_.has(attrs, field)
+					delete ruleset[field]
+
+		# No rules present?
+		return success() if !_.size(ruleset)
+
+		# Callback for when all the rules have been validated.
+		# The only reason for having a callback like this
+		# is to allow for async ruleset calls
+		rulesetComplete = ->
+			if _.size(errors) > 0
+				# Remove errors if another error has precedence, i.e.:
+				# required has precedence over minLength, which
+				# has priority over maxLength, etc...
+				_.each(errors, (errors, field) ->
+					if errors.required?
+						if _.has(errors, 'minLength')
+							delete errors.minLength
+
+						if _.has(errors, 'maxLength')
+							delete errors.maxLength
+				)
+
+				error(errors)
+			else
+				success()
+
+		# Mark the whole ruleset complete when
+		# all the fields have been validated
+		fieldResolved = _.after(_.keys(ruleset).length, rulesetComplete)
+
+		# Loop through the object's ruleset
+		# rules, and after all fields are
+		# validated, return the response to the
+		# success / error callback
+		errors = {}
+
+		# Loop through each field
+		_.each ruleset, (rules, field) ->
+			value = attrs[field]
+
+			# Mark the field as completed when all rules have been validated
+			ruleResolved = _.after(_.keys(rules).length, fieldResolved)
+
+			# Loop through each rule
+			_.every rules, (rule) ->
+				# Method for adding an error to the final errors object
+				addError = (err, rule) ->
+					if !errors[field]?
+						errors[field] = {}
+
+					errors[field][rule] = err
+
+				args = [field, value, rule.data]
+
+				if !rule.fn?
+					ruleResolved()
+				else
+					# Get the result of the ruleset for this field & rule
+					result = rule.fn.call(ctx, args...)
+
+					# Resolve the results of functions. Since these
+					# could take a while to resolve, they can't
+					# be handled like other rules. This functionality
+					# allows you to do async ruleset.
+					if(rule.name is 'fn') and (result?.promise? and $.isFunction(result.promise))
+						onSucccess = ->
+							ruleResolved()
+
+						onFail = ->
+							addError(rule.msg, rule.name)
+							ruleResolved()
+
+						result
+							.success (resp) ->
+								if typeof resp is 'object'
+									if _.has(resp, 'success')
+										if resp.success is false
+											return onFail()
+								return onSucccess()
+							.fail ->
+								return onFail()
+					else
+						if !result
+							# Rule failed (in a non-async operation)
+							# This means: mark the whole field as resolved
+							# And continue to the next field
+							addError(rule.msg, rule.name)
+
+							fieldResolved()
+
+							return false
+						else
+							ruleResolved()
+
+				# Go to the next rule
+				return true
+
+			# Go to the next field
+			return true
+
+		return this
+
+	###
+	 Validate a single attribute against a Stonewall 'ruleset'
+
+	 options =
+		resource: The resource being validate. If resource is provided, resource.validation will be used as the rules.
+		attribute: The attribute name. Needed so the relevant rules can be looked up.
+		attributes: All attributes present (don't use for validation, just for reference)
+		value: The value of the attribute
+		rules: The rules to validate the attributes against.
+		success: Callback for when validation completes with no errors
+		error: Callback for when validate completes with errors
+	###
+	validateAttribute: (options) ->
+		attr = options.attribute
+		attrs = {}
+		attrs[attr] = options.value
+
+		# You can pass in 'attributes' as reference, but attr: value
+		# is the only data used in validation. So since that is the
+		# case, if attributes is provided, add all but options.attr
+		# to the ignore list.
+		ignore = []
+
+		if options.attributes
+			ignore = _.keys(_.omit(options.attributes, [options.attribute]))
+
+			# Add in the current value
+			options.attributes[attr] = options.value
+
+			attrs = options.attributes
+
+		# Create a new Stonewall ruleset
+		options.rules = options.resource.validation if options.resource?.validation?
+
+		delete options.rules if _.isArray options.rules and !options.rules.length
+
+		rules = options.rules
+
+		# Send call to validate method
+		Stonewall.validate.call(@, _.extend options,
+			resource: options.resource
+			ignore: ignore
+			rules: rules
+			attributes: attrs
+			intersection: true
+			error: _.wrap(options.error, (fn, args...) =>
+				# Return only the relevant errors
+				if args.length >= 0
+					if _.has(args[0], attr)
+						args[0] = args[0][attr]
+
+				# Call super fn.
+				fn.call(@, args...)
+			)
+		)
+
+	# General-use activate method. Used for
+	# activating plugins and such.
+	activate: (type, name) ->
+		return if not type
+
+		# Normalization
+		name = name.replace(/\s$|^\s/, '')
+
+		if type is 'plugin'
+			if Stonewall.Plugins.hasOwnProperty(name)
+				Stonewall.Plugins[name].activate()
+
+		return false
