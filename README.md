@@ -251,7 +251,7 @@ Alternatively, you can return a deffered object. If the function returns a deffe
 		success: function() {
 			console.log('Success! No errors.');
 		},
-		error: function() {
-			console.log('Validation failed, errors:', arguments[0]);
+		error: function(e) {
+			console.log('Validation failed, errors:', e);
 		}
 	});
