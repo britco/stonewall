@@ -62,7 +62,7 @@ This information should help you get up and going with Stonewall. First download
 	
 ## Built in rules
 
-### Required
+### required
 Specifies if a value is required or not.
 
 ### minLength
