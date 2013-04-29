@@ -19,6 +19,10 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 
 This information should help you get up and going with Stonewall. First download the source code, and include in your page.
 
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/underscore.js"></script>
+	<script type="text/javascript" src="lib/Stonewall-0.1.0.js"></script>
+
 ### Setting up rules
 
 Rulesets are easy to create. Simply create an object with the properties as the attribute names, and the values as the rules / options. For example:
