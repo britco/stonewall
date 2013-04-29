@@ -217,7 +217,10 @@ The built in patterns are:
 
 ## fn
 
-Use this rule to validate data against a custom function.
+Use this rule to validate data against a custom function. The function accepts the arguments (value, field). If you return true from the function, the rule passes, otherwise it doesn't.
+
+Alternatively, you can return a deffered object. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the above example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
+
 
 	resource = {
 		'validateUnique': function(value, field) {
@@ -252,7 +255,3 @@ Use this rule to validate data against a custom function.
 			console.log('Validation failed, errors:', arguments[0]);
 		}
 	});
-
-The function accepts the arguments (value, field. If you return true from the function, the rule passes, otherwise it doesn't. Or you can return a deffered object. This is where Stonewall really shines.
-
-If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the above example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
