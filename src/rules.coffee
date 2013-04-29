@@ -11,7 +11,12 @@ Stonewall.Rules =
 			return true
 		else
 			# Otherwise, return if value exists
-			return (value? and !_.isEmpty(value))
+			if typeof value is 'string'
+				return (value? and value.length)
+			else if typeof value is 'number'
+				(value? and String(value).length)
+			else
+				return (value?)
 
 	minLength: (field, value='', requiredLength) ->
 		if value.length < requiredLength
