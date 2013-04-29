@@ -25,22 +25,14 @@ This information should help you get up and going with Stonewall. First download
 		'first_name': '',
 		'last_name': '2',
 		'street_line1': '1',
-		'street_line2': '240000 St',
 		'zipcode': 1311114
 	};
 
 	rules = {
-		'first_name': {
-			'required': true
-		},
 		'street_line1': {
 			'required': true,
 			'maxLength': 5,
-		},
-		'street_line2': {
-			'required': true,
-			'maxLength': 10,
-		},
+		}
 		'zipcode': {
 			'required': true,
 			'length': 5,
