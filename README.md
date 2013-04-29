@@ -59,3 +59,5 @@ This information should help you get up and going with Stonewall. First download
 			console.log('Validation failed, errors:', errs);
 		}
 	});
+	
+## Built in rules
