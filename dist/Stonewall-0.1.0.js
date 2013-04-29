@@ -110,11 +110,17 @@
             return re.test(value);
         },
         fn: function() {
-            var field, fn, tailing, value, _ref;
+            var field, fn, fnc, tailing, value;
             field = arguments[0], value = arguments[1], fn = arguments[2], tailing = 4 <= arguments.length ? __slice.call(arguments, 3) : [];
-            if (this.resource[fn] != null) {
-                return (_ref = this.resource[fn]).call.apply(_ref, [ this, value, field ].concat(__slice.call(tailing)));
+            if (typeof fn === "function") {
+                fnc = fn;
+            } else if (this.resource[fn] != null) {
+                fnc = this.resource[fn];
             }
+            if (!(fnc != null)) {
+                throw new Error("No function provided for fn rule");
+            }
+            return fnc.call.apply(fnc, [ this, value, field ].concat(__slice.call(tailing)));
         }
     };
     var Ruleset;
