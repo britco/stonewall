@@ -1,11 +1,11 @@
 Stonewall
 =========
 
-A simple async. validation framework with tight integration to Backbone and Rivets.
+A simple asynchronous validation framework with tight integration to Backbone and Rivets.
 
 ## Introduction
 
-Stonewall is a simple Javascript validation framework. The goal of the framework is to provide a simple framework that doesn't get in your way. But at the same time, Stonewall provides features that many validation frameworks are missing. For instance, Stonewall includes asynchronous validation by default, no plugins required. This means you can have validation rules like 'check if username is registered already.' Stonewall is in its infancy, so there may be bugs, but everything is thoroughly tested, and the framework is already being used in production in a couple of sites.
+Stonewall is a simple Javascript validation framework. The goal of the framework is to provide a validation library that doesn't get in your way. But at the same time, Stonewall provides features that many validation frameworks are missing. For instance, Stonewall includes asynchronous validation by default, no plugins required. This means you can have validation rules like 'check if username is registered already.' Stonewall is in its infancy, so there may be bugs, but everything is thoroughly tested, and the framework is already being used in production in a number of sites.
 
 ## Download
 
@@ -18,6 +18,10 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 ## Basic Setup
 
 This information should help you get up and going with Stonewall. First download the source code, and include in your page.
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/underscore.js"></script>
+	<script type="text/javascript" src="lib/Stonewall-0.1.0.js"></script>
 
 ### Setting up rules
 
