@@ -78,7 +78,7 @@ After you have the rules, you can validate data against the rules by calling Sto
 
 ## Setup with Backbone & Rivets
 
-Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up rules on the Backbone model's **validation** property:
+Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up some rules on a Backbone model's **validation** property:
 
 	UserModel = Backbone.Model.extend({
 		validation: {
@@ -124,7 +124,16 @@ Template:
 	<input type="text" name="first_name" data-value="user.first_name">
 	...
 
-That's all you have to do. Stonewall will modify the rivets `value` binding to validate the property on change, and if it passes, proceed to set the value. And **also** a full validation will occur before the parent form is submitted.
+That's all you have to do. Stonewall will modify the rivets `value` binding to validate the property on change, and if it passes, proceed to set the value. And **also**, full validation will occur when a form is submitted.
+
+This means, if you have the following:
+
+	<form id="register">
+		<input id="username" type="text" name="username" data-value="user.username">
+		<input id="email" type="text" name="email" data-value="user.email">
+	</form>
+
+When #register is submitted, Stonewall.validation will be called for #username and #email.
 	
 ## Built in rules
 
