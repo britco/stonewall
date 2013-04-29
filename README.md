@@ -15,7 +15,7 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 * [Underscore](http://underscorejs.org/)
 * [jQuery](http://jquery.com/)
 
-## Setup
+## Basic Setup
 
 This information should help you get up and going with Stonewall. First download the source code, and include in your page. Then, setup a..
 
