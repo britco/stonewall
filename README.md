@@ -78,34 +78,36 @@ After you have the rules, you can validate data against the rules by calling Sto
 
 ## Setup with Backbone & Rivets
 
-Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up rules on the Backbone model:
+Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up rules on the Backbone model's _validation_ property:
 
 	UserModel = Backbone.Model.extend({
-		email: [
-			{
-				required: true,
-				msg: 'required'
-			},
-			{
-				pattern: 'email',
-				msg: 'invalid format'
-			}
-		]
+		validation: {
+			email: [
+				{
+					required: true,
+					msg: 'required'
+				},
+				{
+					pattern: 'email',
+					msg: 'invalid format'
+				}
+			]
 
-		username: [
-			{
-				required: true
-				msg: 'required'
-			},
-			{
-				minLength: 4
-				msg: 'must be at least 4 characters'
-			},
-			{
-				pattern: /^[.\w-]+$/
-				msg: 'invalid format'
-			}
-		]
+			username: [
+				{
+					required: true
+					msg: 'required'
+				},
+				{
+					minLength: 4
+					msg: 'must be at least 4 characters'
+				},
+				{
+					pattern: /^[.\w-]+$/
+					msg: 'invalid format'
+				}
+			]
+		}
 	});
 
 Then, set up the rivets binding:
