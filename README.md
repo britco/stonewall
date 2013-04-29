@@ -224,7 +224,7 @@ Alternatively, you can return a deffered object. If the function returns a deffe
 
 	resource = {
 		'validateUnique': function(value, field) {
-			$.ajax({
+			return $.ajax({
 				type: 'POST',
 				url: 'user/exists',
 				data: value,
