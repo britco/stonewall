@@ -133,7 +133,7 @@ This means, if you have the following:
 		<input id="email" type="text" name="email" data-value="user.email">
 	</form>
 
-When #register is submitted, Stonewall.validation will be called for #username and #email.
+When #register is submitted, Stonewall.validate will be called for #username and #email.
 	
 ## Built in rules
 
