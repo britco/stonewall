@@ -18,3 +18,44 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 ## Setup
 
 This information should help you get up and going with Stonewall. First download the source code, and include in your page. Then, setup a..
+
+## Example
+  
+	data = {
+		'first_name': '',
+		'last_name': '2',
+		'street_line1': '1',
+		'street_line2': '240000 St',
+		'zipcode': 1311114
+	};
+
+	rules = {
+		'first_name': {
+			'required': true
+		},
+		'street_line1': {
+			'required': true,
+			'maxLength': 5,
+		},
+		'street_line2': {
+			'required': true,
+			'maxLength': 10,
+		},
+		'zipcode': {
+			'required': true,
+			'length': 5,
+			'pattern': 'number'
+		}
+	}
+
+	Stonewall.validate(
+	{
+		attributes: data,
+		rules: rules,
+		success: function() {
+			console.log('Success! No errors.');
+		},
+		error: function(errs) {
+			console.log('Validation failed, errors:', errs);
+		}
+	});
