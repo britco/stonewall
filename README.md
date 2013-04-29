@@ -113,11 +113,13 @@ Stonewall works really well with a Rivets & Backbone setup. If you want to use S
 Then, set up the rivets binding like you normally would.
 
 Backbone View:
+
 	...
 	@rivets = rivets.bind $(@container), { user: @model }
 	...
 
 Template:
+	
 	...
 	<input type="text" name="first_name" data-value="user.first_name">
 	...
