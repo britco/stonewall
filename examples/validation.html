@@ -1,0 +1,47 @@
+<html>
+<body>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/underscore.js"></script>
+	<script type="text/javascript" src="../dist/Stonewall-0.1.0.js"></script>
+	<script type="text/javascript">
+		data = {
+			'first_name': '',
+			'last_name': '2',
+			'street_line1': '1',
+			'street_line2': '240000 St',
+			'zipcode': 1311114
+		};
+
+		rules = {
+			'first_name': {
+				'required': true
+			},
+			'street_line1': {
+				'required': true,
+				'maxLength': 5,
+			},
+			'street_line2': {
+				'required': true,
+				'maxLength': 10,
+			},
+			'zipcode': {
+				'required': true,
+				'length': 5,
+				'pattern': 'number'
+			}
+		}
+
+		Stonewall.validate(
+		{
+			attributes: data,
+			rules: rules,
+			success: function() {
+				console.log('Success! No errors.');
+			},
+			error: function() {
+				console.log('Validation failed, errors:', arguments[0]);
+			}
+		});
+	</script>
+</body>
+</html>

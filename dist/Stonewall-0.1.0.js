@@ -68,7 +68,13 @@
       if (!isRequired) {
         return true;
       } else {
-        return (value != null) && !_.isEmpty(value);
+        if (typeof value === 'string') {
+          return (value != null) && value.length;
+        } else if (typeof value === 'number') {
+          return (value != null) && String(value).length;
+        } else {
+          return (value != null);
+        }
       }
     },
     minLength: function(field, value, requiredLength) {
@@ -592,6 +598,8 @@
 
 (function() {
 
-  Stonewall.activate('plugin', 'Rivets');
+  if (typeof rivets !== "undefined" && rivets !== null) {
+    Stonewall.activate('plugin', 'Rivets');
+  }
 
 }).call(this);
