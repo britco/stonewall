@@ -110,15 +110,17 @@ Stonewall works really well with a Rivets & Backbone setup. If you want to use S
 		}
 	});
 
-Then, set up the rivets binding:
+Then, set up the rivets binding like you normally would.
 
-In the view:
-	
+Backbone View:
+	...
 	@rivets = rivets.bind $(@container), { user: @model }
+	...
 
-In the template:
-
+Template:
+	...
 	<input type="text" name="first_name" data-value="user.first_name">
+	...
 
 Then, Stonewall will tie into the rivets `value` binding, and validate an attribute whenever it changes.
 	
