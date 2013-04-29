@@ -68,5 +68,12 @@ Stonewall.Rules =
 		return re.test(value)
 
 	fn: (field, value, fn, tailing...) ->
-		if @resource[fn]?
-			return @resource[fn].call @, value, field, tailing...
+		if typeof fn is 'function'
+			fnc = fn
+		else if @resource[fn]?
+			fnc = @resource[fn]
+
+		if !fnc?
+			throw new Error "No function provided for fn rule"
+
+		return fnc.call @, value, field, tailing...
