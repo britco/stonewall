@@ -10,3 +10,10 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 ## Download
 
 [Stonewall-0.1.0.js](https://raw.github.com/britco/stonewall/master/dist/Stonewall-0.1.0.js)
+
+## Dependencies
+* [Underscore](http://underscorejs.org/)
+
+## Setup
+
+This information should help you get up and going with Stonewall. First download the source code, and include in your page
