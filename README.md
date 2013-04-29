@@ -30,7 +30,7 @@ Rulesets are easy to create. Simply create an object with the properties as the 
 		}
 	};
 
-There is also the array syntax. Use this if you want to specify a custom error message for a rule. You can do this like so:
+There is also the array syntax. Use this if you want to specify a custom error message for a rule, like so:
 
 	rules = [
 		username: [
@@ -41,8 +41,10 @@ There is also the array syntax. Use this if you want to specify a custom error m
 		]
 	]
 
-## Example
-  
+### Validating the rules
+
+After you have the rules, you can validate data against the rules by calling Stonewall.validate.
+	
 	data = {
 		'first_name': '',
 		'last_name': '2',
