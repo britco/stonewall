@@ -11,7 +11,7 @@
   "engines": {
     "node": "~0.6.10 || 0.8 || 0.9"
   },
-  "distDirectory": "/Users/pdufour/Sites/brit_python/brunch/vendor/js",
+  "distDirectory": "dist",
   "devDependencies": {
     "grunt": "0.4.x",
     "grunt-contrib-coffee": "0.4.x",
