@@ -9,4 +9,4 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 
 ## Download
 
-[1.0](https://raw.github.com/britco/stonewall/master/dist/Stonewall-0.1.0.js)
+[Stonewall-0.1.0.js](https://raw.github.com/britco/stonewall/master/dist/Stonewall-0.1.0.js)
