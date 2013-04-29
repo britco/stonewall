@@ -1,7 +1,7 @@
 Stonewall
 =========
 
-A simple async. validation framework with tight integration to Backbone and Rivets.
+A simple asynchronous validation framework with tight integration to Backbone and Rivets.
 
 ## Introduction
 
