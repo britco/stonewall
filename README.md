@@ -148,6 +148,23 @@ Use this rule to validate data against a custom function.
 			fn: 'validateUnique'
 		}
 	};
+	
+	data = {
+		'username': 'test'
+	};
+	
+	Stonewall.validate(
+		{
+			resource: resource,
+			attributes: data,
+			rules: rules,
+			success: function() {
+				console.log('Success! No errors.');
+			},
+			error: function() {
+				console.log('Validation failed, errors:', arguments[0]);
+			}
+		});
 
 The function accepts the arguments (value, field. If you return true from the function, the rule passes, otherwise it doesn't. Or you can return a deffered object. This is where Stonewall really shines. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data.
 
