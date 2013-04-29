@@ -17,7 +17,29 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 
 ## Basic Setup
 
-This information should help you get up and going with Stonewall. First download the source code, and include in your page. Then, setup a..
+This information should help you get up and going with Stonewall. First download the source code, and include in your page.
+
+### Setting up rules
+
+Rulesets are easy to create. Simply create an object with the properties as the attribute names, and the values as the rules / options. For example:
+	
+	rules = {
+		'username': {
+			'required': true,
+			'maxLength': 5
+		}
+	};
+
+You can also use the array syntax. This is useful when you want to specify a custom error message:
+	
+	rules = [
+		username: [
+			{
+				minLength: 4
+				msg: 'username is not long enough.'
+			}
+		]
+	]
 
 ## Example
   
@@ -55,6 +77,7 @@ This information should help you get up and going with Stonewall. First download
 ## Setup with Backbone & Rivets
 
 Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up rules on the Backbone model:
+
 	UserModel = Backbone.Model.extend({
 		email: [
 			{
