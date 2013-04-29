@@ -19,6 +19,50 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 
 This information should help you get up and going with Stonewall. First download the source code, and include in your page. Then, setup a..
 
+
+## Setup with Backbone & Rivets
+
+Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up rules on the Backbone model:
+	UserModel = Backbone.Model.extend({
+		email: [
+			{
+				required: true,
+				msg: 'required'
+			},
+			{
+				pattern: 'email',
+				msg: 'invalid format'
+			}
+		]
+
+		username: [
+			{
+				required: true
+				msg: 'required'
+			},
+			{
+				minLength: 4
+				msg: 'must be at least 4 characters'
+			},
+			{
+				pattern: /^[.\w-]+$/
+				msg: 'invalid format'
+			}
+		]
+	});
+
+Then, set up the rivets binding:
+
+In the view:
+	
+	@rivets = rivets.bind $(@container), { user: @model }
+
+In the template:
+
+	<input type="text" name="first_name" data-value="user.first_name">
+
+Then, Stonewall will tie into the rivets `value` binding, and validate an attribute whenever it changes.
+
 ## Example
   
 	data = {
