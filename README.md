@@ -110,7 +110,7 @@ Stonewall works really well with a Rivets & Backbone setup. If you want to use S
 		}
 	});
 
-Then, set up the rivets binding like you normally would.
+Then, set up the Rivets binding like you normally would.
 
 Backbone View:
 
@@ -124,7 +124,7 @@ Template:
 	<input type="text" name="first_name" data-value="user.first_name">
 	...
 
-That's all you have to do. Stonewall will modify the rivets `value` binding to validate the property on change, and if it passes, proceed to set the value. And **also**, full validation will occur when a form is submitted.
+That's all you have to do. Stonewall will modify the Rivets `value` binding to validate the property on change, and if it passes, proceed to set the value. And **also**, full validation will occur when a form is submitted.
 
 This means, if you have the following:
 
