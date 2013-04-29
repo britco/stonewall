@@ -1,11 +1,11 @@
 Stonewall
 =========
 
-A simple asynchronous validation framework with tight integration to Backbone and Rivets.
+A asynchronous validation framework with tight integration to Backbone and Rivets.
 
 ## Introduction
 
-Stonewall is a simple Javascript validation framework. The goal of the framework is to provide a validation library that doesn't get in your way. But at the same time, Stonewall provides features that many validation frameworks are missing. For instance, Stonewall includes asynchronous validation by default, no plugins required. This means you can have validation rules like 'check if username is registered already.' Stonewall is in its infancy, so there may be bugs, but everything is thoroughly tested, and the framework is already being used in production in a number of sites.
+Stonewall is a simple Javascript validation framework. The goal of the framework is to provide a validation library that doesn't get in your way. But at the same time, Stonewall provides features that many validation frameworks are missing. For instance, Stonewall includes asynchronous validation by default, no plugins required. This means you can have validation rules like 'check if username is registered already.' Stonewall is in its infancy, so there may be bugs, but everything is thoroughly tested, and the framework is already being used in production on a number of sites.
 
 ## Download
 
@@ -131,9 +131,9 @@ Template:
 	<input type="text" name="first_name" data-value="user.first_name">
 	...
 
-That's all you have to do. Stonewall will modify the Rivets `value` binding to validate the property on change, and if it passes, proceed to set the value. And **also**, full validation will occur when a form is submitted.
+That's all you have to do. Stonewall will modify the Rivets `value` binding to validate the property on change, and if it passes, proceed to set the value.
 
-This means, if you have the following:
+And **also**, full validation will occur when a form is submitted. This means, if you have the following:
 
 	<form id="register">
 		<input id="username" type="text" name="username" data-value="user.username">
@@ -217,7 +217,10 @@ The built in patterns are:
 
 ## fn
 
-Use this rule to validate data against a custom function.
+Use this rule to validate data against a custom function. The function accepts the arguments (value, field). If you return true from the function, the rule passes, otherwise it doesn't.
+
+Alternatively, you can return a deffered object. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the above example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
+
 
 	resource = {
 		'validateUnique': function(value, field) {
@@ -248,11 +251,7 @@ Use this rule to validate data against a custom function.
 		success: function() {
 			console.log('Success! No errors.');
 		},
-		error: function() {
-			console.log('Validation failed, errors:', arguments[0]);
+		error: function(e) {
+			console.log('Validation failed, errors:', e);
 		}
 	});
-
-The function accepts the arguments (value, field. If you return true from the function, the rule passes, otherwise it doesn't. Or you can return a deffered object. This is where Stonewall really shines.
-
-If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the above example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
