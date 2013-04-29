@@ -38,7 +38,7 @@ This information should help you get up and going with Stonewall. First download
 			'length': 5,
 			'pattern': 'number'
 		}
-	}
+	};
 
 	Stonewall.validate(
 	{
