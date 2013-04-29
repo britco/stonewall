@@ -119,12 +119,12 @@ Backbone View:
 	...
 
 Template:
-	
+
 	...
 	<input type="text" name="first_name" data-value="user.first_name">
 	...
 
-Then, Stonewall will tie into the rivets `value` binding, and validate an attribute whenever it changes.
+That's all you have to do. Stonewall will modify the rivets `value` binding to validate the property on change, and if it passes, proceed to set the value. And **also** a full validation will occur before the parent form is submitted.
 	
 ## Built in rules
 
