@@ -133,12 +133,13 @@ Use this rule to validate data against a custom function.
 
 	resource = {
 		'validateUnique': function(value, field) {
-			$.ajax
-				type: 'POST'
-				url: 'user/exists'
-				data: value
-				dataType: 'json'
+			$.ajax({
+				type: 'POST',
+				url: 'user/exists',
+				data: value,
+				dataType: 'json',
 				contentType: 'application/json'
+			});
 		}
 	};
 	
