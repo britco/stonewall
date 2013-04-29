@@ -78,7 +78,7 @@ After you have the rules, you can validate data against the rules by calling Sto
 
 ## Setup with Backbone & Rivets
 
-Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up rules on the Backbone model's _validation_ property:
+Stonewall works really well with a Rivets & Backbone setup. If you want to use Stonewall in this setup, first set up rules on the Backbone model's **validation** property:
 
 	UserModel = Backbone.Model.extend({
 		validation: {
