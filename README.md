@@ -61,3 +61,16 @@ This information should help you get up and going with Stonewall. First download
 	});
 	
 ## Built in rules
+
+### Required
+Specifies if a value is required or not.
+
+### minLength
+
+Value must meet the mininum length to pass
+	
+	rules = {
+		'name': {
+			'minLength': 3
+		}
+	}
