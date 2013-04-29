@@ -4,4 +4,4 @@
  @company Brit + Co
 ###
 
-Stonewall.activate('plugin', 'Rivets')
+Stonewall.activate('plugin', 'Rivets') if rivets?
