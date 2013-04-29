@@ -67,10 +67,87 @@ Specifies if a value is required or not.
 
 ### minLength
 
-Value must meet the mininum length to pass
+Value must meet the mininum length to pass.
 	
 	rules = {
 		'name': {
 			'minLength': 3
 		}
 	}
+
+### maxLength
+
+Value cannot exceed this length.
+	
+	rules = {
+		'name': {
+			'maxLength': 10
+		}
+	}
+
+### rangeLength
+
+Value must be in between this length.
+	
+	rules = {
+		'username': {
+			rangeLength: [6, 20]
+		}
+
+### length
+
+Must be exactly this length.
+	
+	rules = {
+		'address': {
+			length: 12
+		}
+
+## equalTo
+
+Value must equal this other value.
+	
+	rules = {
+		'password_confirm': {
+			equalTo: 'password'
+		}
+
+## pattern
+
+Value must match this pattern. You can use a built in pattern, your specify your own.
+	
+	rules = {
+		'username': {
+			pattern: /^[.\w-]+$/
+		}
+	}
+
+The built in patterns are:
+* number: `/^([0-9]+)$/`
+* email: `/^(.+)@(.+){2,}\.(.+){2,}$/`
+
+
+## fn
+
+Use this rule to validate data against a custom function.
+
+	resource = {
+		'validateUnique': function(value, field) {
+			$.ajax
+				type: 'POST'
+				url: 'user/exists'
+				data: value
+				dataType: 'json'
+				contentType: 'application/json'
+		}
+	};
+	
+	rules = {
+		'username': {
+			fn: 'validateUnique'
+		}
+	};
+
+The function accepts the arguments (value, field. If you return true from the function, the rule passes, otherwise it doesn't. Or you can return a deffered object. This is where Stonewall really shines. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data.
+
+So for the above example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
