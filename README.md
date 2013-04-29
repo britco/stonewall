@@ -65,6 +65,12 @@ This information should help you get up and going with Stonewall. First download
 ### required
 Specifies if a value is required or not.
 
+	rules = {
+		'first_name': {
+			'required': true
+		}
+	}
+
 ### minLength
 
 Value must meet the mininum length to pass.
