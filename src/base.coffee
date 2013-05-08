@@ -28,7 +28,7 @@ Stonewall.Core = _.extend Stonewall,
 			if v? and typeof v is "object" and not (v instanceof Date or v instanceof RegExp)
 				Stonewall.flatten(v, bucket, leading + k)
 			else
-				# Obj[foo.bar] = 8 takes precedence over obj = { 'foo': 'bar': 2 }
+				# obj[foo.bar] = 8 takes precedence over obj = { 'foo': 'bar': 2 }
 				if not leading or ((leading + k) not of bucket) or bucket[leading + k] is `undefined`
 					bucket[leading + k] = v
 
