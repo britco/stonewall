@@ -83,9 +83,9 @@ After you have the rules, you can validate data against the rules by calling [St
 		}
 	});
 	
-## Flatenning nested objects
+## Validated nested properties
 
-Flattening nested objects is trivial with Stonewall. Say you have an object like:
+Validated nested properties is trivial with Stonewall. Say you have an object like:
 
 	obj = {
 		billing_info': {
