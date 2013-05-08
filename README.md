@@ -243,7 +243,7 @@ The built in patterns are:
 
 Use this rule to validate data against a custom function. The function accepts the arguments (value, field). If you return true from the function, the rule passes, otherwise it doesn't.
 
-Alternatively, you can return a deffered object. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the above example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
+Alternatively, you can return a deffered object. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the below example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
 
 
 	resource = {
