@@ -82,6 +82,30 @@ After you have the rules, you can validate data against the rules by calling [St
 			console.log('Validation failed, errors:', errs);
 		}
 	});
+	
+## Flatenning nested objects
+
+Flattening nested objects is trivial with Stonewall. Say you have an object like:
+
+	obj = {
+		billing_info': {
+			cvc: 13
+		}
+	}
+	
+When this data is validated, it will be flattened to the following:
+
+	obj = {
+		'billing_info.cvc' : 13
+	}
+
+That makes it super easy to set up validation on the cvc property.
+
+	rules = {
+		'billing_info.cvc': {
+			required: true
+		}
+	}
 
 ## Setup with Backbone & Rivets
 
