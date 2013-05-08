@@ -6,6 +6,36 @@
 
 Stonewall.Core = _.extend Stonewall,
 	###
+	 Flatten a group of attributes
+	 into a list like
+
+	 	first.second.last: value
+	 	billing_address.name: 2
+
+	 object: The object to flatten
+	 bucket: Where the result of the flattening goes
+	 leading: Leading path. This is used internally.
+	###
+	flatten: (obj, bucket, leading='') ->
+		if(Backbone?.Model? and obj instanceof Backbone.Model)
+			obj = obj['attributes']
+
+		bucket = bucket || {}
+
+		leading = leading + '.' if leading != ''
+
+		for k, v of obj
+			if v? and typeof v is "object" and not (v instanceof Date or v instanceof RegExp)
+				Stonewall.flatten(v, bucket, leading + k)
+			else
+				# Obj[foo.bar] = 8 takes precedence over obj = { 'foo': 'bar': 2 }
+				if not leading or ((leading + k) not of bucket) or bucket[leading + k] is `undefined`
+					bucket[leading + k] = v
+
+		return bucket
+
+
+	###
 	 Validate a group of attributes against a Stonewall 'ruleset'
 
 	 options =
@@ -18,10 +48,13 @@ Stonewall.Core = _.extend Stonewall,
 		error: Callback for when validate completes with errors
 	###
 	validate: (options) ->
-		attrs = options.attributes
+		attrs = Stonewall.flatten(options.attributes)
+
 		ruleset = _.clone((new Stonewall.Ruleset(options.rules)).rules)
+
 		success = $.proxy(options.success, @) || Function.prototype
 		error = $.proxy(options.error, @) || Function.prototype
+
 		binder = @binder
 		binding = @
 

@@ -236,6 +236,42 @@ var __slice = [].slice;
 
 Stonewall.Core = _.extend(Stonewall, {
   /*
+  	 Flatten a group of attributes
+  	 into a list like
+  
+  	 	first.second.last: value
+  	 	billing_address.name: 2
+  
+  	 object: The object to flatten
+  	 bucket: Where the result of the flattening goes
+  	 leading: Leading path. This is used internally.
+  */
+
+  flatten: function(obj, bucket, leading) {
+    var k, v;
+    if (leading == null) {
+      leading = '';
+    }
+    if (((typeof Backbone !== "undefined" && Backbone !== null ? Backbone.Model : void 0) != null) && obj instanceof Backbone.Model) {
+      obj = obj['attributes'];
+    }
+    bucket = bucket || {};
+    if (leading !== '') {
+      leading = leading + '.';
+    }
+    for (k in obj) {
+      v = obj[k];
+      if ((v != null) && typeof v === "object" && !(v instanceof Date || v instanceof RegExp)) {
+        Stonewall.flatten(v, bucket, leading + k);
+      } else {
+        if (!leading || (!((leading + k) in bucket)) || bucket[leading + k] === undefined) {
+          bucket[leading + k] = v;
+        }
+      }
+    }
+    return bucket;
+  },
+  /*
   	 Validate a group of attributes against a Stonewall 'ruleset'
   
   	 options =
@@ -250,7 +286,7 @@ Stonewall.Core = _.extend(Stonewall, {
 
   validate: function(options) {
     var attrs, binder, binding, ctx, error, errors, field, fieldResolved, ignoreField, intersection, rules, ruleset, rulesetComplete, success, _i, _len, _ref;
-    attrs = options.attributes;
+    attrs = Stonewall.flatten(options.attributes);
     ruleset = _.clone((new Stonewall.Ruleset(options.rules)).rules);
     success = $.proxy(options.success, this) || Function.prototype;
     error = $.proxy(options.error, this) || Function.prototype;
