@@ -50,7 +50,7 @@ There is also the array syntax. Use this if you want to specify a custom error m
 
 ### Validating the rules
 
-After you have the rules, you can validate data against the rules by calling [Stonewall.validate](docs/methods.md#stonewallvalidateoptions).
+After you have the rules, you can validate data against the rules by calling [Stonewall.validate](docs/methods.md#stonewallvalidateoptions). Pass in the attributes & rules, and also callbacks for when the validation is complete.
 	
 	data = {
 		'first_name': '',
