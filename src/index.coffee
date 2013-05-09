@@ -6,6 +6,8 @@
 
 window.Stonewall = Stonewall = {}
 
+Stonewall.Util = {}
+
 Stonewall.noop = ->
 
 Stonewall.Rules = {}

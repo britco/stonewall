@@ -5,6 +5,7 @@ module.exports = (grunt) ->
 
 	modules = [
 		'src/index.coffee'
+		'src/util.coffee'
 		'src/messages.coffee'
 		'src/rules.coffee'
 		'src/ruleset.coffee'

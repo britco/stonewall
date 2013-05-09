@@ -37,8 +37,7 @@ Stonewall.Core = _.extend Stonewall,
 
 	###
 	 Validate a group of attributes against a Stonewall 'ruleset'
-
-	 options =
+	 @options:
 		resource: The resource being validate. Useful for auto-populating rules.
 		attributes: The attributes you want to validate
 		ignore: List of attrs. in options.attributes that shouldn't be validated.
@@ -179,8 +178,7 @@ Stonewall.Core = _.extend Stonewall,
 
 	###
 	 Validate a single attribute against a Stonewall 'ruleset'
-
-	 options =
+	 @options:
 		resource: The resource being validate. If resource is provided, resource.validation will be used as the rules.
 		attribute: The attribute name. Needed so the relevant rules can be looked up.
 		attributes: All attributes present (don't use for validation, just for reference)
@@ -246,3 +244,18 @@ Stonewall.Core = _.extend Stonewall,
 				Stonewall.Plugins[name].activate()
 
 		return false
+
+	# General-use configure method
+	configure: (type='plugin', obj, options) ->
+		return if not obj or not options
+
+		# Normalization
+		obj = obj.replace(/\s$|^\s/, '')
+
+		# If object is a plugin, then extend the plugin object
+		# with the new properties
+		if type is 'plugin'
+			source = Stonewall.Plugins.Rivets
+			source.options = _.extend source.options, options
+
+		return (if source then source else false)
