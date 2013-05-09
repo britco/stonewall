@@ -16,7 +16,7 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 * [jQuery](http://jquery.com/)
 
 ## Docs
-* [Methods](https://github.com/britco/stonewall/blob/master/docs/methods.md)
+* [Methods](docs/methods.md)
 
 ## Basic Setup
 
@@ -165,6 +165,41 @@ And **also**, full validation will occur when a form is submitted. This means, i
 	</form>
 
 When #register is submitted, Stonewall.validate will be called for #username and #email.
+
+## Configuration
+
+You can change some of the way the internals of Stonewall work by using [Stonewall.configure](docs/methods.md#stonewallconfiguretypeplugin-obj-options). Right now the only configurable options are for the Stonewall Rivets integration. You can configure the `showError` and `hideError` functions. These are callbacks for when an element becomes invalid / valid. So say you have an input like:
+	<input id="email" />
+
+And you also have validation rules like:
+	
+	rules = {
+		'required' : true
+	};
+
+
+When email becomes invalid, showError is called.
+
+	$("#email").showError({ 'message': 'Email is required' })
+	
+If you don't configure `showError` it will do the following:
+
+	$(@).addClass('error')
+	    .removeClass('valid')
+	    .attr('data-error', options.message || '')
+	    .nextAll('.msg:not(.valid)').each ->
+			$(@).text(options.message)
+			$(@).fadeIn()
+
+
+The default functions will get you a far way, but if you need to, they can be configured like so:
+
+	Stonewall.configure('plugin', 'rivets',
+		showError: (options) ->
+			# Options looks like options = { message: 'Email is invalid!' }
+		hideError: ->
+			# Do something here
+	)
 	
 ## Built in rules
 
