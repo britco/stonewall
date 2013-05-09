@@ -165,6 +165,19 @@ And **also**, full validation will occur when a form is submitted. This means, i
 	</form>
 
 When #register is submitted, Stonewall.validate will be called for #username and #email.
+
+## Configuration
+
+You change some of the way the internals of Stonewall work. Right now the only configurable options are for the Stonewall Rivets integration. You can configure the `showError` and `hideError` functions. These are callbacks for when an element becomes invalid / valid. You set up configuration like so:
+
+	Stonewall.configure('plugin', 'rivets',
+		showError: (options) ->
+			# Options looks like options = { message: 'Email is invalid!' }
+		hideError: ->
+			# Do something here
+	)
+	
+The default functions will get you a far way, but they can be configured if you wish.
 	
 ## Built in rules
 
