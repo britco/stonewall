@@ -35,7 +35,7 @@ Rulesets are easy to create. Simply create an object with the properties as the 
 			'required': true,
 			'maxLength': 5
 		}
-	};
+	}
 
 There is also the array syntax. Use this if you want to specify a custom error message for a rule, like so:
 
