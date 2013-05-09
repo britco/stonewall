@@ -122,8 +122,7 @@ Stonewall works really well with a Rivets & Backbone setup. If you want to use S
 					pattern: 'email',
 					msg: 'invalid format'
 				}
-			]
-
+			],
 			username: [
 				{
 					required: true
@@ -139,7 +138,7 @@ Stonewall works really well with a Rivets & Backbone setup. If you want to use S
 				}
 			]
 		}
-	});
+	})
 
 Then, set up the Rivets binding like you normally would.
 
