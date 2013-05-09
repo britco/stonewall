@@ -168,7 +168,7 @@ When #register is submitted, Stonewall.validate will be called for #username and
 
 ## Configuration
 
-You change some of the way the internals of Stonewall work by using [Stonewall.configure](docs/methods.md#stonewallconfiguretypeplugin-obj-options] Right now the only configurable options are for the Stonewall Rivets integration. You can configure the `showError` and `hideError` functions. These are callbacks for when an element becomes invalid / valid. You set up configuration like so:
+You change some of the way the internals of Stonewall work by using [Stonewall.configure](docs/methods.md#stonewallconfiguretypeplugin-obj-options). Right now the only configurable options are for the Stonewall Rivets integration. You can configure the `showError` and `hideError` functions. These are callbacks for when an element becomes invalid / valid. You set up configuration like so:
 
 	Stonewall.configure('plugin', 'rivets',
 		showError: (options) ->
