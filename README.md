@@ -168,7 +168,21 @@ When #register is submitted, Stonewall.validate will be called for #username and
 
 ## Configuration
 
-You change some of the way the internals of Stonewall work by using [Stonewall.configure](docs/methods.md#stonewallconfiguretypeplugin-obj-options). Right now the only configurable options are for the Stonewall Rivets integration. You can configure the `showError` and `hideError` functions. These are callbacks for when an element becomes invalid / valid. The default showError does the following.
+You can change some of the way the internals of Stonewall work by using [Stonewall.configure](docs/methods.md#stonewallconfiguretypeplugin-obj-options). Right now the only configurable options are for the Stonewall Rivets integration. You can configure the `showError` and `hideError` functions. These are callbacks for when an element becomes invalid / valid. So say you have an input like:
+	<input id="email" />
+
+And you also have validation rules like:
+	
+	rules = {
+		'required' : true
+	};
+
+
+When email becomes invalid, showError is called.
+
+	$("#email").showError({ 'message': 'Email is required' })
+	
+If you don't configure `showError` it will do the following:
 
 	$(@).addClass('error')
 	    .removeClass('valid')
