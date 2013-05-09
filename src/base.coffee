@@ -245,7 +245,12 @@ Stonewall.Core = _.extend Stonewall,
 
 		return false
 
-	# General-use configure method
+	###
+	 General-use configure method
+	 @type Type of configuration option
+	 @obj Part of Stonewall you wish to configure
+	 @options New options you are setting
+	###
 	configure: (type='plugin', obj, options) ->
 		return if not obj or not options
 

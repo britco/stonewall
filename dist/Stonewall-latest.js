@@ -8,6 +8,8 @@ var Stonewall;
 
 window.Stonewall = Stonewall = {};
 
+Stonewall.Util = {};
+
 Stonewall.noop = function() {};
 
 Stonewall.Rules = {};
@@ -20,6 +22,34 @@ Stonewall.Core = {};
 
 Stonewall.Plugins = {
   Rivets: null
+};
+
+/*
+ Stonewall general use functions
+ @author Paul Dufour
+ @company Brit + Co
+*/
+
+var util;
+
+Stonewall.Util = util = {
+  getLastModelAndPath: function(obj, path) {
+    var first_step, parts, spl;
+    if (!path) {
+      return [false, false];
+    }
+    spl = path.split('.');
+    parts = [];
+    first_step = obj.get(spl[0]);
+    if (!(first_step instanceof Backbone.Model)) {
+      if (spl.length === 1) {
+        return [obj, path];
+      } else {
+        return [obj, spl.slice(1).join('.')];
+      }
+    }
+    return Stonewall.util.getLastModelAndPath(first_step, spl.slice(1).join('.'));
+  }
 };
 
 /*
@@ -273,8 +303,7 @@ Stonewall.Core = _.extend(Stonewall, {
   },
   /*
   	 Validate a group of attributes against a Stonewall 'ruleset'
-  
-  	 options =
+  	 @options:
   		resource: The resource being validate. Useful for auto-populating rules.
   		attributes: The attributes you want to validate
   		ignore: List of attrs. in options.attributes that shouldn't be validated.
@@ -390,8 +419,7 @@ Stonewall.Core = _.extend(Stonewall, {
   },
   /*
   	 Validate a single attribute against a Stonewall 'ruleset'
-  
-  	 options =
+  	 @options:
   		resource: The resource being validate. If resource is provided, resource.validation will be used as the rules.
   		attribute: The attribute name. Needed so the relevant rules can be looked up.
   		attributes: All attributes present (don't use for validation, just for reference)
@@ -449,6 +477,28 @@ Stonewall.Core = _.extend(Stonewall, {
       }
     }
     return false;
+  },
+  /*
+  	 General-use configure method
+  	 @type Type of configuration option
+  	 @obj Part of Stonewall you wish to configure
+  	 @options New options you are setting
+  */
+
+  configure: function(type, obj, options) {
+    var source;
+    if (type == null) {
+      type = 'plugin';
+    }
+    if (!obj || !options) {
+      return;
+    }
+    obj = obj.replace(/\s$|^\s/, '');
+    if (type === 'plugin') {
+      source = Stonewall.Plugins.Rivets;
+      source.options = _.extend(source.options, options);
+    }
+    return (source ? source : false);
   }
 });
 
@@ -458,25 +508,77 @@ Stonewall.Core = _.extend(Stonewall, {
  @company Brit + Co
 */
 
-var plugin;
+var plugin,
+  __slice = [].slice;
 
 Stonewall.Plugins.Rivets = plugin = {
-  getLastModelAndPath: function(obj, path) {
-    var first_step, parts, spl;
-    if (!path) {
-      return [false, false];
-    }
-    spl = path.split('.');
-    parts = [];
-    first_step = obj.get(spl[0]);
-    if (!(first_step instanceof Backbone.Model)) {
-      if (spl.length === 1) {
-        return [obj, path];
-      } else {
-        return [obj, spl.slice(1).join('.')];
+  options: {
+    showError: function(options) {
+      if (options == null) {
+        options = {};
       }
+      if (!(options.message != null)) {
+        return false;
+      }
+      return $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg:not(.valid)').each(function() {
+        $(this).text(options.message);
+        return $(this).fadeIn();
+      });
+    },
+    hideError: function() {
+      return $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg:not(.valid)').each(function() {
+        $(this).fadeOut(20);
+        return $(this).text('');
+      });
     }
-    return this.getLastModelAndPath(first_step, spl.slice(1).join('.'));
+  },
+  status: {
+    'initial-keydown': true
+  },
+  activate: function() {
+    _.extend(rivets.binders.value, this);
+    $.fn.showError = function() {
+      var _ref;
+      return (_ref = plugin.options.showError).call.apply(_ref, [this].concat(__slice.call(arguments)));
+    };
+    return $.fn.hideError = function() {
+      var _ref;
+      return (_ref = plugin.options.hideError).call.apply(_ref, [this].concat(__slice.call(arguments)));
+    };
+  },
+  bind: function(el) {
+    var key, model, _ref;
+    _ref = Stonewall.Util.getLastModelAndPath(this.model, this.keypath), model = _ref[0], key = _ref[1];
+    this._model = model;
+    this._key = key;
+    this.id = _.uniqueId('sw_pg_rivets');
+    this.state = 'processing';
+    Stonewall.validateAttribute.call(this, {
+      resource: model,
+      attribute: key,
+      attributes: plugin.getAttributes.call(this),
+      value: model.get(key),
+      success: function(errors) {
+        return this.state = 'valid';
+      },
+      error: function(errors) {
+        return this.state = 'invalid';
+      }
+    });
+    $(this.el).attr('data-previous-value', this.model.get(this.keypath));
+    this.form = $(el).parents("form");
+    this.keydownListener = $(el).on("keydown." + this.id, $.proxy(this.binder.onKeydown, this));
+    this.currentListener = $(el).on("change." + this.id, $.proxy(this.binder.onChange, this));
+    this.submitListener = $(el).parents("form").on("submit." + this.id, $.proxy(this.binder.onSubmit, this));
+    return this.dataSubmitListener = $(el).parents("form").find('a[data-submit="true"]').on("click." + this.id, $.proxy(this.binder.onSubmit, this));
+  },
+  unbind: function() {
+    $(el).off("change." + this.id, this.currentListener);
+    $(el).off("keydown." + this.id, this.keydownListener);
+    $(el).parents('form').off("submit." + this.id, this.submitListener);
+    $(el).parents("form").find('a[data-submit="true"]').on("click." + this.id, this.dataSubmitListener);
+    this.state = 'valid';
+    return $(el).hideError();
   },
   getAttributes: function() {
     var binding, data, _i, _len, _ref;
@@ -499,7 +601,7 @@ Stonewall.Plugins.Rivets = plugin = {
         attribute: _this._key,
         attributes: plugin.getAttributes.call(_this),
         value: $(_this.el).val(),
-        success: function(errors) {
+        success: function() {
           this.state = 'valid';
           $(this.el).hideError();
           return this.publish();
@@ -514,22 +616,23 @@ Stonewall.Plugins.Rivets = plugin = {
     });
   },
   onChange: function(e, options) {
-    if ($(e.currentTarget).attr('data-silent-change') !== 'true') {
+    if (plugin.status['silent-change'] !== true) {
       $(this.el).attr('data-previous-value', $(this.el).val());
       return plugin.validateElement.call(this);
     }
   },
   onKeydown: function(e) {
-    var code, initial_keydown, previous_value, value;
+    var code, previous_value, value;
     code = e.keyCode || e.which;
     value = $(this.el).val();
     previous_value = $(this.el).attr('data-previous-value');
-    initial_keydown = $(this.el).attr('data-initial-keydown') || true;
     if (code === 9) {
-      if (initial_keydown === true) {
-        $(this.el).attr('data-previous-value', value).attr('data-initial-keydown', 'false').attr('data-silent-change', 'true');
+      if (plugin.status['initial-keydown'] === true) {
+        $(this.el).attr('data-previous-value', value);
+        plugin.status['initial-keydown'] = false;
+        plugin.status['silent-change'] = true;
         plugin.validateElement.call(this);
-        return $(this.el).removeAttr('data-silent-change');
+        return plugin.status['silent-change'] = false;
       }
     }
   },
@@ -539,63 +642,6 @@ Stonewall.Plugins.Rivets = plugin = {
       e.stopImmediatePropagation();
       return false;
     }
-  },
-  bind: function(el) {
-    var key, model, _ref;
-    _ref = this.binder.getLastModelAndPath(this.model, this.keypath), model = _ref[0], key = _ref[1];
-    this._model = model;
-    this._key = key;
-    this.id = _.uniqueId('sw_pg_rivets');
-    this.state = 'processing';
-    Stonewall.validateAttribute.call(this, {
-      resource: model,
-      attribute: key,
-      attributes: plugin.getAttributes.call(this),
-      value: model.get(key),
-      success: function(errors) {
-        return this.state = 'valid';
-      },
-      error: function(errors) {
-        return this.state = 'invalid';
-      }
-    });
-    $(this.el).attr('data-previous-value', this.model.get(this.keypath));
-    this.form = $(el).parents("form");
-    this.currentListener = $(el).on("change." + this.id, $.proxy(this.binder.onChange, this));
-    this.keydownListener = $(el).on("keydown." + this.id, $.proxy(this.binder.onKeydown, this));
-    this.submitListener = $(el).parents("form").on("submit." + this.id, $.proxy(this.binder.onSubmit, this));
-    return this.dataSubmitListener = $(el).parents("form").find('a[data-submit="true"]').on("click." + this.id, $.proxy(this.binder.onSubmit, this));
-  },
-  unbind: function() {
-    $(el).off("change." + this.id, this.currentListener);
-    $(el).off("keydown." + this.id, this.keydownListener);
-    $(el).parents('form').off("submit." + this.id, this.submitListener);
-    $(el).parents("form").find('a[data-submit="true"]').on("click." + this.id, this.dataSubmitListener);
-    this.state = 'valid';
-    return $(el).hideError();
-  },
-  showError: function(options) {
-    if (options == null) {
-      options = {};
-    }
-    if (!(options.message != null)) {
-      return false;
-    }
-    return $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg:not(.valid)').each(function() {
-      $(this).text(options.message);
-      return $(this).fadeIn();
-    });
-  },
-  hideError: function() {
-    return $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg:not(.valid)').each(function() {
-      $(this).fadeOut(20);
-      return $(this).text('');
-    });
-  },
-  activate: function() {
-    _.extend(rivets.binders.value, this);
-    $.fn.showError = this.showError;
-    return $.fn.hideError = this.hideError;
   }
 };
 
