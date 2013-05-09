@@ -175,7 +175,7 @@ And you also have validation rules like:
 	
 	rules = {
 		'required' : true
-	};
+	}
 
 
 When email becomes invalid, showError is called.
