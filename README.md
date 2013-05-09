@@ -50,7 +50,7 @@ There is also the array syntax. Use this if you want to specify a custom error m
 
 ### Validating the rules
 
-After you have the rules, you can validate data against the rules by calling [Stonewall.validate](docs/methods.md#stonewallvalidateoptions).
+After you have the rules, you can validate data against the rules by calling [Stonewall.validate](docs/methods.md#stonewallvalidateoptions). Pass in the attributes & rules, and also callbacks for when the validation is complete.
 	
 	data = {
 		'first_name': '',
@@ -82,6 +82,30 @@ After you have the rules, you can validate data against the rules by calling [St
 			console.log('Validation failed, errors:', errs);
 		}
 	});
+	
+## Validated nested properties
+
+Validated nested properties is trivial with Stonewall. Say you have an object like:
+
+	obj = {
+		billing_info': {
+			cvc: 13
+		}
+	}
+	
+When this data is validated, it will be flattened to the following:
+
+	obj = {
+		'billing_info.cvc' : 13
+	}
+
+That makes it super easy to set up validation on the cvc property.
+
+	rules = {
+		'billing_info.cvc': {
+			required: true
+		}
+	}
 
 ## Setup with Backbone & Rivets
 
@@ -219,7 +243,7 @@ The built in patterns are:
 
 Use this rule to validate data against a custom function. The function accepts the arguments (value, field). If you return true from the function, the rule passes, otherwise it doesn't.
 
-Alternatively, you can return a deffered object. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the above example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
+Alternatively, you can return a deffered object. If the function returns a deffered object, the return status of the deffered object will be used as the passing status of the data. So for the below example, if 'user/exists' throws a 200, the rule will pass, but if it throws a 500, it will fail.
 
 
 	resource = {
