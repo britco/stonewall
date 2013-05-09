@@ -23,3 +23,11 @@ options:
 * rules: The rules to validate the attributes against.
 * success: Callback for when validation completes with no errors
 * error: Callback for when validate completes with errors
+
+
+### Stonewall.configure(type='plugin', obj, options)
+Configure Stonewall.
+
+type: Type of configuration option
+obj: Part of Stonewall you wish to configure
+options: New options you are setting
