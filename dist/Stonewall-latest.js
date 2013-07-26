@@ -262,7 +262,8 @@ Stonewall.Ruleset = Ruleset = (function() {
  @company Brit + Co
 */
 
-var __slice = [].slice;
+var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+  __slice = [].slice;
 
 Stonewall.Core = _.extend(Stonewall, {
   /*
@@ -365,9 +366,16 @@ Stonewall.Core = _.extend(Stonewall, {
     fieldResolved = _.after(_.keys(ruleset).length, rulesetComplete);
     errors = {};
     _.each(ruleset, function(rules, field) {
-      var ruleResolved, value;
+      var ruleResolved, rulenames, value;
       value = attrs[field];
       ruleResolved = _.after(_.keys(rules).length, fieldResolved);
+      if (_.isEmpty(value)) {
+        rulenames = _.pluck(rules, 'name');
+        if (__indexOf.call(rulenames, 'required') >= 0) {
+          fieldResolved();
+          return true;
+        }
+      }
       _.every(rules, function(rule) {
         var addError, args, onFail, onSucccess, result, _ref1;
         addError = function(err, rule) {
@@ -508,7 +516,7 @@ Stonewall.Core = _.extend(Stonewall, {
  @company Brit + Co
 */
 
-var plugin,
+var plugin, view,
   __slice = [].slice;
 
 Stonewall.Plugins.Rivets = plugin = {
@@ -547,8 +555,10 @@ Stonewall.Plugins.Rivets = plugin = {
     };
   },
   bind: function(el) {
-    var key, model, _ref;
+    var key, model, _ref,
+      _this = this;
     _ref = Stonewall.Util.getLastModelAndPath(this.model, this.keypath), model = _ref[0], key = _ref[1];
+    this._stonewall = true;
     this._model = model;
     this._key = key;
     this.id = _.uniqueId('sw_pg_rivets');
@@ -569,16 +579,21 @@ Stonewall.Plugins.Rivets = plugin = {
     this.form = $(el).parents("form");
     this.keydownListener = $(el).on("keydown." + this.id, $.proxy(this.binder.onKeydown, this));
     this.currentListener = $(el).on("change." + this.id, $.proxy(this.binder.onChange, this));
-    this.submitListener = $(el).parents("form").on("submit." + this.id, $.proxy(this.binder.onSubmit, this));
-    return this.dataSubmitListener = $(el).parents("form").find('a[data-submit="true"]').on("click." + this.id, $.proxy(this.binder.onSubmit, this));
+    return _.defer(function() {
+      var forms, onSubmit;
+      forms = $(el).parents("form");
+      onSubmit = $.proxy(_this.binder.onSubmit, _this);
+      _this.submitListener = forms.on("submit." + _this.id, onSubmit);
+      return _this.dataSubmitListener = forms.find('a[data-submit="true"]').on("click." + _this.id, onSubmit);
+    });
   },
   unbind: function() {
-    $(el).off("change." + this.id, this.currentListener);
-    $(el).off("keydown." + this.id, this.keydownListener);
-    $(el).parents('form').off("submit." + this.id, this.submitListener);
-    $(el).parents("form").find('a[data-submit="true"]').on("click." + this.id, this.dataSubmitListener);
+    $(this.el).off("change." + this.id, this.currentListener);
+    $(this.el).off("keydown." + this.id, this.keydownListener);
+    $(this.el).parents('form').off("submit." + this.id, this.submitListener);
+    $(this.el).parents("form").find('a[data-submit="true"]').on("click." + this.id, this.dataSubmitListener);
     this.state = 'valid';
-    return $(el).hideError();
+    return $(this.el).hideError();
   },
   getAttributes: function() {
     var binding, data, _i, _len, _ref;
@@ -641,6 +656,49 @@ Stonewall.Plugins.Rivets = plugin = {
       $(this.form).find('input:not(:file), select, textarea').trigger('change');
       e.stopImmediatePropagation();
       return false;
+    }
+  }
+};
+
+rivets.bind = _.wrap(rivets.bind, function() {
+  var args, fn, thisview;
+  fn = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  thisview = fn.apply(null, args);
+  return thisview = _.extend(thisview, view);
+});
+
+view = {
+  isValid: function() {
+    var binding, child, _i, _j, _len, _len1, _ref, _ref1;
+    if (!(this.bindings != null)) {
+      return true;
+    }
+    _ref = this.bindings;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      binding = _ref[_i];
+      if (!view._isValid.call(this, binding)) {
+        return false;
+      }
+      if ((binding.iterated != null) && binding.iterated.length) {
+        _ref1 = binding.iterated;
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          child = _ref1[_j];
+          if (!view.isValid.call(child)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  },
+  _isValid: function(binding) {
+    if (!(binding._stonewall != null)) {
+      return true;
+    }
+    if (binding.state === 'invalid') {
+      return false;
+    } else {
+      return true;
     }
   }
 };
