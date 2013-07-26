@@ -239,6 +239,7 @@ Value must be in between this length.
 		'username': {
 			rangeLength: [6, 20]
 		}
+	}
 
 ### length
 
@@ -248,6 +249,7 @@ Must be exactly this length.
 		'address': {
 			length: 12
 		}
+	}
 
 ## equalTo
 
@@ -257,6 +259,7 @@ Value must equal this other value.
 		'password_confirm': {
 			equalTo: 'password'
 		}
+	}
 
 ## pattern
 
