@@ -175,8 +175,6 @@ Stonewall.Plugins.Rivets = plugin =
 
 # Extensions to Rivets.View
 rivets.bind = _.wrap rivets.bind, (fn, args...) ->
-	# console.log fn, args
-
 	thisview = fn(args...)
 
 	thisview = _.extend(thisview, view)
@@ -187,9 +185,8 @@ view =
 	# valid, return false to parent function.
 	#
 	# This function allows you to do complex functions, like check if the
-	# first three inputs are valid, before showing the next three.
-	#
-	# Should be called within the context of a Rivets view
+	# first three inputs are valid, before showing the next three. Should be
+	# called within the context of a Rivets view.
 	isValid: ->
 		# Loop through all bindings
 		return true if not @bindings?
