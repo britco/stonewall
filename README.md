@@ -9,7 +9,7 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 
 ## Download
 
-[Stonewall-0.1.0.js](https://raw.github.com/britco/stonewall/master/dist/Stonewall-0.1.0.js)
+[Stonewall-0.1.1.js](https://raw.github.com/britco/stonewall/master/dist/Stonewall-0.1.1.js)
 
 ## Dependencies
 * [Underscore](http://underscorejs.org/)
@@ -24,7 +24,7 @@ This information should help you get up and going with Stonewall. First download
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="lib/underscore.js"></script>
-	<script type="text/javascript" src="lib/Stonewall-0.1.0.js"></script>
+	<script type="text/javascript" src="lib/Stonewall-0.1.1.js"></script>
 
 ### Setting up rules
 
