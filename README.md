@@ -165,6 +165,8 @@ And **also**, full validation will occur when a form is submitted. This means, i
 
 When #register is submitted, Stonewall.validate will be called for #username and #email.
 
+Another cool feature of this integration, is that anytime, if you wanted to check the state of the Rivets view you previously set up (@rivets), you can call @rivets.isValid() and it will return either true or false.
+
 ## Configuration
 
 You can change some of the way the internals of Stonewall work by using [Stonewall.configure](docs/methods.md#stonewallconfiguretypeplugin-obj-options). Right now the only configurable options are for the Stonewall Rivets integration. You can configure the `showError` and `hideError` functions. These are callbacks for when an element becomes invalid / valid. So say you have an input like:
