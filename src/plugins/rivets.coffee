@@ -69,8 +69,6 @@ Stonewall.Plugins.Rivets = plugin =
 		$(@el).attr('data-previous-value', @model.get(@keypath))
 
 		# Setup listeners
-		@form = $(el).parents("form")
-
 		@keydownListener = $(el).on "keydown.#{@id}", $.proxy(@binder.onKeydown, @)
 
 		@currentListener = $(el).on "change.#{@id}", $.proxy(@binder.onChange, @)
@@ -79,7 +77,7 @@ Stonewall.Plugins.Rivets = plugin =
 		# element has been inserted in the body (it is possible for the el to
 		# not be ineserted yet if there is a data-each binding present).
 		_.defer =>
-			forms = $(el).parents("form")
+			@forms = forms = $(el).parents("form")
 			onSubmit = $.proxy(@binder.onSubmit, @)
 
 			@submitListener = forms.on("submit.#{@id}", onSubmit)
@@ -167,7 +165,7 @@ Stonewall.Plugins.Rivets = plugin =
 		# If there are remaining inputs that are invalid, kill the submit
 		if @state isnt 'valid'
 			# Trigger change on all the inputs
-			$(@form).find('input:not(:file), select, textarea').trigger('change')
+			@forms.find('input:not(:file), select, textarea').trigger('change')
 
 			e.stopImmediatePropagation()
 

@@ -615,12 +615,11 @@
         }
       });
       $(this.el).attr('data-previous-value', this.model.get(this.keypath));
-      this.form = $(el).parents("form");
       this.keydownListener = $(el).on("keydown." + this.id, $.proxy(this.binder.onKeydown, this));
       this.currentListener = $(el).on("change." + this.id, $.proxy(this.binder.onChange, this));
       return _.defer(function() {
         var forms, onSubmit;
-        forms = $(el).parents("form");
+        _this.forms = forms = $(el).parents("form");
         onSubmit = $.proxy(_this.binder.onSubmit, _this);
         _this.submitListener = forms.on("submit." + _this.id, onSubmit);
         return _this.dataSubmitListener = forms.find('a[data-submit="true"]').on("click." + _this.id, onSubmit);
@@ -692,7 +691,7 @@
     },
     onSubmit: function(e) {
       if (this.state !== 'valid') {
-        $(this.form).find('input:not(:file), select, textarea').trigger('change');
+        this.forms.find('input:not(:file), select, textarea').trigger('change');
         e.stopImmediatePropagation();
         return false;
       }
