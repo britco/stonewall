@@ -395,14 +395,19 @@
       fieldResolved = _.after(_.keys(ruleset).length, rulesetComplete);
       errors = {};
       _.each(ruleset, function(rules, field) {
-        var ruleResolved, rulenames, value;
+        var ruleResolved, ruledata, rulenames, value;
         value = attrs[field];
         ruleResolved = _.after(_.keys(rules).length, fieldResolved);
         if (_.isEmpty(value)) {
           rulenames = _.pluck(rules, 'name');
           if (__indexOf.call(rulenames, 'required') >= 0) {
-            fieldResolved();
-            return true;
+            ruledata = _.last(_.where(rules, {
+              name: 'required'
+            }));
+            if (ruledata.data === false) {
+              fieldResolved();
+              return true;
+            }
           }
         }
         _.every(rules, function(rule) {

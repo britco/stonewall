@@ -117,16 +117,19 @@ Stonewall.Core = _.extend Stonewall,
 			# Mark the field as completed when all rules have been validated
 			ruleResolved = _.after(_.keys(rules).length, fieldResolved)
 
-			# If there is a 'required' rule in the ruleset, and there is no
-			# value present, then the rule should get marked as resolved
+			# If required is false, and the field value is empty, then the
+			# validation should move onto the next field
 			if _.isEmpty(value)
 				rulenames = _.pluck(rules, 'name')
 
 				if 'required' in rulenames
-					fieldResolved()
+					ruledata = _.last(_.where(rules, name: 'required'))
 
-					# Skip to the next rule
-					return true
+					if ruledata.data is false
+						fieldResolved()
+
+						# Skip to the next field
+						return true
 
 			# Loop through each rule
 			_.every rules, (rule) ->
