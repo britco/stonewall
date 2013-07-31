@@ -26,7 +26,6 @@ module.exports = (grunt) ->
 					bare: false
 				files:
 					'<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js': modules
-
 		uglify:
 			coffee:
 				options:
@@ -43,7 +42,6 @@ module.exports = (grunt) ->
 					 */
 
 					 '''
-
 		watch:
 			coffee:
 				files: ['src/*.coffee', 'src/**/*.coffee']
@@ -56,8 +54,6 @@ module.exports = (grunt) ->
 
 	# Tasks
 	# =====
-	grunt.registerTask 'after:build', ->
-
 	grunt.registerTask 'build', ->
 		# Build for release
 		files = grunt.config('coffee.compile.files')
@@ -70,5 +66,11 @@ module.exports = (grunt) ->
 		grunt.config.set 'uglify.coffee.files', {
 			'<%= pkg.distDirectory %>/<%= pkg.name %>-<%= pkg.version %>.js': '<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js'
 		}
+
+		grunt.registerTask 'after:build', ->
+			# Rebuild 'latest' version now
+			grunt.config.set 'coffee.compile.options.bare', false
+			grunt.config.set 'uglify.coffee.files', files
+			grunt.task.run 'coffee:compile'
 
 		grunt.task.run 'coffee:compile', 'uglify:coffee', 'after:build'

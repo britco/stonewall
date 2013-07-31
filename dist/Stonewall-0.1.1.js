@@ -33,7 +33,7 @@
                     return [ obj, spl.slice(1).join(".") ];
                 }
             }
-            return Stonewall.util.getLastModelAndPath(first_step, spl.slice(1).join("."));
+            return Stonewall.Util.getLastModelAndPath(first_step, spl.slice(1).join("."));
         }
     };
     Stonewall.Messages = {

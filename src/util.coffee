@@ -24,4 +24,4 @@ Stonewall.Util = util =
 				return [obj, spl[1..].join('.')]
 
 		# Move onto next step
-		return Stonewall.util.getLastModelAndPath(first_step, spl[1..].join('.'))
+		return Stonewall.Util.getLastModelAndPath(first_step, spl[1..].join('.'))
