@@ -160,6 +160,8 @@ Stonewall.Plugins.Rivets = plugin =
 
 				plugin.status['silent-change'] = false
 
+		return
+
 	# Validate the whole form before submitting
 	onSubmit: (e) ->
 		# If there are remaining inputs that are invalid, kill the submit

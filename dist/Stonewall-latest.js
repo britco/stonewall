@@ -685,7 +685,7 @@
           plugin.status['initial-keydown'] = false;
           plugin.status['silent-change'] = true;
           plugin.validateElement.call(this);
-          return plugin.status['silent-change'] = false;
+          plugin.status['silent-change'] = false;
         }
       }
     },
