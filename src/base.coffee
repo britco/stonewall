@@ -257,6 +257,8 @@ Stonewall.Core = _.extend Stonewall,
 				if args.length >= 0
 					if _.has(args[0], attr)
 						args[0] = args[0][attr]
+					else
+						args[0] = `void 0`
 
 				# Call super fn
 				fn.call(@, args...)

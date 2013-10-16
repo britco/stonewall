@@ -11,6 +11,9 @@ Stonewall.Plugins.Rivets = plugin =
 			if !options.message?
 				return false
 
+			if not $(@).next('.msg').length
+				$(@).after('<span class="msg"></span>')
+
 			$(@).addClass('error')
 			    .removeClass('valid')
 			    .attr('data-error', options.message || '')
@@ -22,6 +25,9 @@ Stonewall.Plugins.Rivets = plugin =
 
 		# Hide all validation errors
 		hideError: (options={}) ->
+			if not $(@).next('.msg').length
+				$(@).after('<span class="msg"></span>')
+
 			$(@).removeClass('error')
 			.addClass('valid')
 			.removeAttr('data-error')
@@ -29,7 +35,7 @@ Stonewall.Plugins.Rivets = plugin =
 				$(@).removeClass('error')
 				$(@).addClass('valid')
 
-				if options?.message?
+				if _.isString(options.message) && options?.message?
 					$(@).text(options.message)
 				else
 					$(@).text('')

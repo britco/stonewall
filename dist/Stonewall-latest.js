@@ -525,6 +525,8 @@
           if (args.length >= 0) {
             if (_.has(args[0], attr)) {
               args[0] = args[0][attr];
+            } else {
+              args[0] = void 0;
             }
           }
           return fn.call.apply(fn, [_this].concat(__slice.call(args)));
@@ -590,6 +592,9 @@
         if (!(options.message != null)) {
           return false;
         }
+        if (!$(this).next('.msg').length) {
+          $(this).after('<span class="msg"></span>');
+        }
         return $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg').each(function() {
           $(this).removeClass('valid');
           $(this).addClass('error');
@@ -598,10 +603,20 @@
         });
       },
       hideError: function(options) {
+        if (options == null) {
+          options = {};
+        }
+        if (!$(this).next('.msg').length) {
+          $(this).after('<span class="msg"></span>');
+        }
         return $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg').each(function() {
           $(this).removeClass('error');
           $(this).addClass('valid');
-          return $(this).text(options.message);
+          if (_.isString(options.message) && ((options != null ? options.message : void 0) != null)) {
+            return $(this).text(options.message);
+          } else {
+            return $(this).text('');
+          }
         });
       }
     },
