@@ -269,6 +269,9 @@
               msg: rule.msg,
               data: rule[rule_name]
             };
+            if ((rule != null ? rule.success_msg : void 0) != null) {
+              newObj.success_msg = rule.success_msg;
+            }
             validation[field].push(newObj);
           }
         }
@@ -344,7 +347,7 @@
     */
 
     validate: function(options) {
-      var attrs, binder, binding, ctx, error, errors, field, fieldResolved, ignoreField, intersection, rules, ruleset, rulesetComplete, success, _i, _len, _ref;
+      var attrs, binder, binding, ctx, error, errors, field, fieldResolved, ignoreField, intersection, rules, ruleset, rulesetComplete, success, success_messages, _field, _i, _j, _len, _len1, _ref, _rule, _rules;
       attrs = Stonewall.flatten(options.attributes);
       ruleset = _.clone((new Stonewall.Ruleset(options.rules)).rules);
       success = $.proxy(options.success, this) || Function.prototype;
@@ -372,6 +375,16 @@
           }
         }
       }
+      success_messages = {};
+      for (_field in ruleset) {
+        _rules = ruleset[_field];
+        for (_j = 0, _len1 = _rules.length; _j < _len1; _j++) {
+          _rule = _rules[_j];
+          if (_rule.success_msg != null) {
+            success_messages[_field] = _rule.success_msg;
+          }
+        }
+      }
       if (!_.size(ruleset)) {
         return success();
       }
@@ -389,7 +402,7 @@
           });
           return error(errors);
         } else {
-          return success();
+          return success(success_messages);
         }
       };
       fieldResolved = _.after(_.keys(ruleset).length, rulesetComplete);
@@ -505,6 +518,16 @@
             }
           }
           return fn.call.apply(fn, [_this].concat(__slice.call(args)));
+        }),
+        success: _.wrap(options.success, function() {
+          var args, fn;
+          fn = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+          if (args.length >= 0) {
+            if (_.has(args[0], attr)) {
+              args[0] = args[0][attr];
+            }
+          }
+          return fn.call.apply(fn, [_this].concat(__slice.call(args)));
         })
       }));
     },
@@ -567,15 +590,18 @@
         if (!(options.message != null)) {
           return false;
         }
-        return $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg:not(.valid)').each(function() {
+        return $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg').each(function() {
+          $(this).removeClass('valid');
+          $(this).addClass('error');
           $(this).text(options.message);
           return $(this).fadeIn();
         });
       },
-      hideError: function() {
-        return $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg:not(.valid)').each(function() {
-          $(this).fadeOut(20);
-          return $(this).text('');
+      hideError: function(options) {
+        return $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg').each(function() {
+          $(this).removeClass('error');
+          $(this).addClass('valid');
+          return $(this).text(options.message);
         });
       }
     },
@@ -654,9 +680,11 @@
           attribute: _this._key,
           attributes: plugin.getAttributes.call(_this),
           value: $(_this.el).val(),
-          success: function() {
+          success: function(message) {
             this.state = 'valid';
-            $(this.el).hideError();
+            $(this.el).hideError({
+              message: message
+            });
             return this.publish();
           },
           error: function(errors) {

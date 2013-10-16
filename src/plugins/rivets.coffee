@@ -14,18 +14,25 @@ Stonewall.Plugins.Rivets = plugin =
 			$(@).addClass('error')
 			    .removeClass('valid')
 			    .attr('data-error', options.message || '')
-			    .nextAll('.msg:not(.valid)').each ->
+			    .nextAll('.msg').each ->
+					$(@).removeClass('valid')
+					$(@).addClass('error')
 					$(@).text(options.message)
 					$(@).fadeIn()
 
 		# Hide all validation errors
-		hideError: ->
+		hideError: (options={}) ->
 			$(@).removeClass('error')
-			    .addClass('valid')
-			    .removeAttr('data-error')
-			    .nextAll('.msg:not(.valid)').each ->
-			    	$(@).fadeOut(20)
-			    	$(@).text('')
+			.addClass('valid')
+			.removeAttr('data-error')
+			.nextAll('.msg').each ->
+				$(@).removeClass('error')
+				$(@).addClass('valid')
+
+				if options?.message?
+					$(@).text(options.message)
+				else
+					$(@).text('')
 
 	status:
 		'initial-keydown': true
@@ -119,10 +126,10 @@ Stonewall.Plugins.Rivets = plugin =
 				attribute: @_key
 				attributes: plugin.getAttributes.call(@)
 				value: $(@el).val()
-				success: ->
+				success: (message) ->
 					@state = 'valid'
 
-					$(@el).hideError()
+					$(@el).hideError(message: message)
 
 					@publish()
 				error: (errors) ->

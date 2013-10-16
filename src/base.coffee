@@ -76,6 +76,15 @@ Stonewall.Core = _.extend Stonewall,
 				if !_.has(attrs, field)
 					delete ruleset[field]
 
+		success_messages = {}
+
+		# Get first available success message, and use that when all rules
+		# validate
+		for _field,_rules of ruleset
+			for _rule in _rules
+				if _rule.success_msg?
+					success_messages[_field] = _rule.success_msg
+
 		# No rules present?
 		return success() if !_.size(ruleset)
 
@@ -98,7 +107,7 @@ Stonewall.Core = _.extend Stonewall,
 
 				error(errors)
 			else
-				success()
+				success(success_messages)
 
 		# Mark the whole ruleset complete when
 		# all the fields have been validated
@@ -240,7 +249,16 @@ Stonewall.Core = _.extend Stonewall,
 					if _.has(args[0], attr)
 						args[0] = args[0][attr]
 
-				# Call super fn.
+				# Call super fn
+				fn.call(@, args...)
+			),
+			success: _.wrap(options.success, (fn, args...) =>
+				# Return only the relevant success message
+				if args.length >= 0
+					if _.has(args[0], attr)
+						args[0] = args[0][attr]
+
+				# Call super fn
 				fn.call(@, args...)
 			)
 		)

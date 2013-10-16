@@ -75,6 +75,9 @@ Stonewall.Ruleset = class Ruleset
 						msg: rule.msg
 						data: rule[rule_name]
 
+					if rule?.success_msg?
+						newObj.success_msg = rule.success_msg
+
 					validation[field].push newObj
 
 		return _.clone(validation, true)
