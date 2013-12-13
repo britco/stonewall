@@ -739,6 +739,7 @@
         _this = this;
       if (this.state === 'processing') {
         $(this.el).on('stonewall:validated', callback = function() {
+          $(_this.el).off('stonewall:validated', callback);
           return _this.forms.submit();
         });
         return false;
