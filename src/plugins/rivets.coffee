@@ -23,6 +23,8 @@ Stonewall.Plugins.Rivets = plugin =
 					$(@).text(options.message)
 					$(@).fadeIn()
 
+			return
+
 		# Hide all validation errors
 		hideError: (options={}) ->
 			if not $(@).next('.msg').length
@@ -40,6 +42,8 @@ Stonewall.Plugins.Rivets = plugin =
 				else
 					$(@).text('')
 
+			return
+
 	status:
 		'initial-keydown': true
 
@@ -51,6 +55,8 @@ Stonewall.Plugins.Rivets = plugin =
 		$.fn.showError = -> plugin.options.showError.call(@, arguments...)
 
 		$.fn.hideError = -> plugin.options.hideError.call(@, arguments...)
+
+		return
 
 	# Setup bindings
 	bind: (el) ->
@@ -96,6 +102,8 @@ Stonewall.Plugins.Rivets = plugin =
 			@submitListener = forms.on("submit.#{@id}", onSubmit)
 			@dataSubmitListener = forms.find('a[data-submit="true"]').on("click.#{@id}", onSubmit)
 
+		return
+
 	# Remove bindings
 	unbind: ->
 		$(@el).off "change.#{@id}", @currentListener
@@ -109,6 +117,8 @@ Stonewall.Plugins.Rivets = plugin =
 		@state = 'valid'
 
 		$(@el).hideError()
+
+		return
 
 	# Get a flattened object consisting attrs. and values
 	# of all rivets bindings present in the view
@@ -143,6 +153,8 @@ Stonewall.Plugins.Rivets = plugin =
 
 					$(@el).showError message: _.first _.values errors
 
+		return
+
 	# Whenever a value is changed, run it through
 	# the validators, and then if everything passes
 	# publish the value to the object
@@ -151,6 +163,8 @@ Stonewall.Plugins.Rivets = plugin =
 			$(@el).attr('data-previous-value', $(@el).val())
 
 			plugin.validateElement.call(@)
+
+		return
 
 	# Records 'first tab in an input field (blank or not)' as a change
 	# Block change events

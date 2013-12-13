@@ -595,7 +595,7 @@
         if (!$(this).next('.msg').length) {
           $(this).after('<span class="msg"></span>');
         }
-        return $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg').each(function() {
+        $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg').each(function() {
           $(this).removeClass('valid');
           $(this).addClass('error');
           $(this).text(options.message);
@@ -609,7 +609,7 @@
         if (!$(this).next('.msg').length) {
           $(this).after('<span class="msg"></span>');
         }
-        return $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg').each(function() {
+        $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg').each(function() {
           $(this).removeClass('error');
           $(this).addClass('valid');
           if (_.isString(options.message) && ((options != null ? options.message : void 0) != null)) {
@@ -629,7 +629,7 @@
         var _ref;
         return (_ref = plugin.options.showError).call.apply(_ref, [this].concat(__slice.call(arguments)));
       };
-      return $.fn.hideError = function() {
+      $.fn.hideError = function() {
         var _ref;
         return (_ref = plugin.options.hideError).call.apply(_ref, [this].concat(__slice.call(arguments)));
       };
@@ -658,7 +658,7 @@
       $(this.el).attr('data-previous-value', this.model.get(this.keypath));
       this.keydownListener = $(el).on("keydown." + this.id, $.proxy(this.binder.onKeydown, this));
       this.currentListener = $(el).on("change." + this.id, $.proxy(this.binder.onChange, this));
-      return _.defer(function() {
+      _.defer(function() {
         var forms, onSubmit;
         _this.forms = forms = $(el).parents("form");
         onSubmit = $.proxy(_this.binder.onSubmit, _this);
@@ -672,7 +672,7 @@
       $(this.el).parents('form').off("submit." + this.id, this.submitListener);
       $(this.el).parents("form").find('a[data-submit="true"]').on("click." + this.id, this.dataSubmitListener);
       this.state = 'valid';
-      return $(this.el).hideError();
+      $(this.el).hideError();
     },
     getAttributes: function() {
       var binding, data, _i, _len, _ref;
@@ -689,7 +689,7 @@
         _this = this;
       self = this;
       this.state = 'processing';
-      return _.defer(function() {
+      _.defer(function() {
         return Stonewall.validateAttribute.call(_this, {
           resource: _this._model,
           attribute: _this._key,
@@ -714,7 +714,7 @@
     onChange: function(e, options) {
       if (plugin.status['silent-change'] !== true) {
         $(this.el).attr('data-previous-value', $(this.el).val());
-        return plugin.validateElement.call(this);
+        plugin.validateElement.call(this);
       }
     },
     onKeydown: function(e) {
