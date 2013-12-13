@@ -562,6 +562,7 @@
                     value: $(_this.el).val(),
                     success: function(message) {
                         this.state = "valid";
+                        $(this.el).trigger("stonewall:validated");
                         $(this.el).hideError({
                             message: message
                         });
@@ -569,6 +570,7 @@
                     },
                     error: function(errors) {
                         this.state = "invalid";
+                        $(this.el).trigger("stonewall:validated");
                         return $(this.el).showError({
                             message: _.first(_.values(errors))
                         });
@@ -598,6 +600,13 @@
             }
         },
         onSubmit: function(e) {
+            var callback, _this = this;
+            if (this.state === "processing") {
+                $(this.el).on("stonewall:validated", callback = function() {
+                    return _this.forms.submit();
+                });
+                return false;
+            }
             if (this.state !== "valid") {
                 this.forms.find("input:not(:file), select, textarea").trigger("change");
                 e.stopImmediatePropagation();

@@ -12,6 +12,7 @@
     "node": "~0.6.10 || 0.8 || 0.9"
   },
   "distDirectory": "dist",
+  "_distDirectory": "/Users/pauldufour/Sites/brit_python/brunch/vendor/js",
   "devDependencies": {
     "grunt": "0.4.x",
     "grunt-contrib-coffee": "0.4.x",

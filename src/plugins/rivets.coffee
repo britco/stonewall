@@ -145,11 +145,15 @@ Stonewall.Plugins.Rivets = plugin =
 				success: (message) ->
 					@state = 'valid'
 
+					$(@el).trigger('stonewall:validated')
+
 					$(@el).hideError(message: message)
 
 					@publish()
 				error: (errors) ->
 					@state = 'invalid'
+
+					$(@el).trigger('stonewall:validated')
 
 					$(@el).showError message: _.first _.values errors
 
@@ -191,6 +195,15 @@ Stonewall.Plugins.Rivets = plugin =
 
 	# Validate the whole form before submitting
 	onSubmit: (e) ->
+		# If validation is running, wait until it's done,
+		# and then try again
+		if @state == 'processing'
+			$(@el).on('stonewall:validated', callback = =>
+				$(@el).off('stonewall:validated', callback)
+				@forms.submit()
+			)
+			return false
+
 		# If there are remaining inputs that are invalid, kill the submit
 		if @state isnt 'valid'
 			# Trigger change on all the inputs
@@ -199,6 +212,8 @@ Stonewall.Plugins.Rivets = plugin =
 			e.stopImmediatePropagation()
 
 			return false
+
+		return
 
 # Extensions to Rivets.View
 rivets.bind = _.wrap rivets.bind, (fn, args...) ->
