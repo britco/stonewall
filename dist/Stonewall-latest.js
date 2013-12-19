@@ -597,8 +597,8 @@
         if (!$(this).next('.msg').length) {
           $(this).after('<span class="msg"></span>');
         }
-        $(this).addClass('error').removeClass('valid').attr('data-error', options.message || '').nextAll('.msg').each(function() {
-          $(this).removeClass('valid');
+        $(this).addClass('error').removeClass('success').attr('data-error', options.message || '').nextAll('.msg').each(function() {
+          $(this).removeClass('success');
           $(this).addClass('error');
           $(this).text(options.message);
           $(this).css({
@@ -614,9 +614,9 @@
         if (!$(this).next('.msg').length) {
           $(this).after('<span class="msg"></span>');
         }
-        $(this).removeClass('error').addClass('valid').removeAttr('data-error').nextAll('.msg').each(function() {
+        $(this).removeClass('error').addClass('success').removeAttr('data-error').nextAll('.msg').each(function() {
           $(this).removeClass('error');
-          $(this).addClass('valid');
+          $(this).addClass('success');
           if (_.isString(options.message) && ((options != null ? options.message : void 0) != null)) {
             return $(this).text(options.message);
           } else {

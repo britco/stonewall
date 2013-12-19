@@ -17,10 +17,10 @@ Stonewall.Plugins.Rivets = plugin =
 				$(@).after('<span class="msg"></span>')
 
 			$(@).addClass('error')
-			    .removeClass('valid')
+			    .removeClass('success')
 			    .attr('data-error', options.message || '')
 			    .nextAll('.msg').each ->
-					$(@).removeClass('valid')
+					$(@).removeClass('success')
 					$(@).addClass('error')
 					$(@).text(options.message)
 
@@ -40,11 +40,11 @@ Stonewall.Plugins.Rivets = plugin =
 				$(@).after('<span class="msg"></span>')
 
 			$(@).removeClass('error')
-			.addClass('valid')
+			.addClass('success')
 			.removeAttr('data-error')
 			.nextAll('.msg').each ->
 				$(@).removeClass('error')
-				$(@).addClass('valid')
+				$(@).addClass('success')
 
 				if _.isString(options.message) && options?.message?
 					$(@).text(options.message)
