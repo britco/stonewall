@@ -586,12 +586,14 @@
   Stonewall.Plugins.Rivets = plugin = {
     options: {
       showError: function(options) {
+        var input_position;
         if (options == null) {
           options = {};
         }
         if (!(options.message != null)) {
           return false;
         }
+        input_position = $(this).position();
         if (!$(this).next('.msg').length) {
           $(this).after('<span class="msg"></span>');
         }
@@ -599,6 +601,9 @@
           $(this).removeClass('valid');
           $(this).addClass('error');
           $(this).text(options.message);
+          $(this).css({
+            top: "" + input_position.top + "px"
+          });
           return $(this).fadeIn();
         });
       },

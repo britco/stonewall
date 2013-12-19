@@ -11,6 +11,8 @@ Stonewall.Plugins.Rivets = plugin =
 			if !options.message?
 				return false
 
+			input_position = $(@).position()
+
 			if not $(@).next('.msg').length
 				$(@).after('<span class="msg"></span>')
 
@@ -21,6 +23,13 @@ Stonewall.Plugins.Rivets = plugin =
 					$(@).removeClass('valid')
 					$(@).addClass('error')
 					$(@).text(options.message)
+
+					# Position message right next to input
+					$(@).css({
+						top: "#{input_position.top}px"
+					})
+
+					# Fade in message
 					$(@).fadeIn()
 
 			return
