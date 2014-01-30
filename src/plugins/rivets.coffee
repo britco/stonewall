@@ -11,6 +11,7 @@ Stonewall.Plugins.Rivets = plugin =
 			if !options.message?
 				return false
 
+			$input = $(@)
 			input_position = $(@).position()
 
 			if not $(@).next('.msg').length
@@ -24,9 +25,17 @@ Stonewall.Plugins.Rivets = plugin =
 					$(@).addClass('error')
 					$(@).text(options.message)
 
-					# Position message right next to input
+					# Position message centered to the input.. unless it's a
+					# textarea
+					if $input.is('textarea')
+						top = input_position.top
+					else
+						top = '50%'
+						marginTop = ($(@).outerHeight() / -2) + 'px'
+
 					$(@).css({
-						top: "#{input_position.top}px"
+						'top': top
+						'margin-top': marginTop
 					})
 
 					# Fade in message

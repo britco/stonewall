@@ -586,23 +586,32 @@
   Stonewall.Plugins.Rivets = plugin = {
     options: {
       showError: function(options) {
-        var input_position;
+        var $input, input_position;
         if (options == null) {
           options = {};
         }
         if (!(options.message != null)) {
           return false;
         }
+        $input = $(this);
         input_position = $(this).position();
         if (!$(this).next('.msg').length) {
           $(this).after('<span class="msg"></span>');
         }
         $(this).addClass('error').removeClass('success').attr('data-error', options.message || '').nextAll('.msg').each(function() {
+          var marginTop, top;
           $(this).removeClass('success');
           $(this).addClass('error');
           $(this).text(options.message);
+          if ($input.is('textarea')) {
+            top = input_position.top;
+          } else {
+            top = '50%';
+            marginTop = ($(this).outerHeight() / -2) + 'px';
+          }
           $(this).css({
-            top: "" + input_position.top + "px"
+            'top': top,
+            'margin-top': marginTop
           });
           return $(this).fadeIn();
         });
