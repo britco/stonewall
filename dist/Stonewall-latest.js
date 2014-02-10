@@ -600,8 +600,8 @@
         }
         $(this).addClass('error').removeClass('success').attr('data-error', options.message || '').nextAll('.msg').each(function() {
           var marginTop, top;
-          $(this).removeClass('success');
-          $(this).addClass('error');
+          $(this).removeClass('tooltip-success');
+          $(this).addClass('tooltip-error');
           $(this).text(options.message);
           if ($input.is('textarea')) {
             top = input_position.top;
@@ -624,8 +624,8 @@
           $(this).after('<span class="msg"></span>');
         }
         $(this).removeClass('error').addClass('success').removeAttr('data-error').nextAll('.msg').each(function() {
-          $(this).removeClass('error');
-          $(this).addClass('success');
+          $(this).removeClass('tooltip-error');
+          $(this).addClass('tooltip-success');
           if (_.isString(options.message) && ((options != null ? options.message : void 0) != null)) {
             return $(this).text(options.message);
           } else {

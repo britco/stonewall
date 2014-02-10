@@ -21,8 +21,8 @@ Stonewall.Plugins.Rivets = plugin =
 			    .removeClass('success')
 			    .attr('data-error', options.message || '')
 			    .nextAll('.msg').each ->
-					$(@).removeClass('success')
-					$(@).addClass('error')
+					$(@).removeClass('tooltip-success')
+					$(@).addClass('tooltip-error')
 					$(@).text(options.message)
 
 					# Position message centered to the input.. unless it's a
@@ -52,8 +52,8 @@ Stonewall.Plugins.Rivets = plugin =
 			.addClass('success')
 			.removeAttr('data-error')
 			.nextAll('.msg').each ->
-				$(@).removeClass('error')
-				$(@).addClass('success')
+				$(@).removeClass('tooltip-error')
+				$(@).addClass('tooltip-success')
 
 				if _.isString(options.message) && options?.message?
 					$(@).text(options.message)
