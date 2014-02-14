@@ -30,12 +30,13 @@ Stonewall.Plugins.Rivets = plugin =
 					if $input.is('textarea')
 						top = input_position.top
 					else
-						top = '50%'
-						marginTop = ($(@).outerHeight() / -2) + 'px'
+						top = ($input.outerHeight() - $(@).outerHeight()) / 2
+						top += $input.position().top
+						top = Math.ceil(top)
+						top += 'px'
 
 					$(@).css({
 						'top': top
-						'margin-top': marginTop
 					})
 
 					# Fade in message
