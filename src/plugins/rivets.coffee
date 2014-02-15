@@ -25,19 +25,7 @@ Stonewall.Plugins.Rivets = plugin =
 					$(@).addClass('tooltip-error')
 					$(@).text(options.message)
 
-					# Position message centered to the input.. unless it's a
-					# textarea
-					if $input.is('textarea')
-						top = input_position.top
-					else
-						top = ($input.outerHeight() - $(@).outerHeight()) / 2
-						top += $input.position().top
-						top = Math.ceil(top)
-						top += 'px'
-
-					$(@).css({
-						'top': top
-					})
+					plugin.centerMessage($(@),$input)
 
 					# Fade in message
 					$(@).fadeIn()
@@ -49,12 +37,16 @@ Stonewall.Plugins.Rivets = plugin =
 			if not $(@).next('.msg').length
 				$(@).after('<span class="msg"></span>')
 
+			input = $(@)
+
 			$(@).removeClass('error')
 			.addClass('success')
 			.removeAttr('data-error')
 			.nextAll('.msg').each ->
 				$(@).removeClass('tooltip-error')
 				$(@).addClass('tooltip-success')
+
+				plugin.centerMessage($(@), input)
 
 				if _.isString(options.message) && options?.message?
 					$(@).text(options.message)
@@ -65,6 +57,19 @@ Stonewall.Plugins.Rivets = plugin =
 
 	status:
 		'initial-keydown': true
+
+	centerMessage: ($msg,$input)->
+		# Position message centered to the input.. unless it's a
+		# textarea
+		if $input.is('textarea')
+			top = $input.position().top
+		else
+			top = ($input.outerHeight() - $msg.outerHeight()) / 2
+			top += $input.position().top
+			top = Math.ceil(top)
+			top += 'px'
+
+		$msg.css('top', top)
 
 	activate: ->
 		# Mixin the plugin code to the rivets binder
