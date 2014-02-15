@@ -18,6 +18,9 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 ## Docs
 * [Methods](docs/methods.md)
 
+## License
+form-helpers is available under the [MIT License](LICENSE.md).
+
 ## Basic Setup
 
 This information should help you get up and going with Stonewall. First download the source code, and include in your page.
@@ -29,7 +32,7 @@ This information should help you get up and going with Stonewall. First download
 ### Setting up rules
 
 Rulesets are easy to create. Simply create an object with the properties as the attribute names, and the values as the rules / options. For example:
-	
+
 	rules = {
 		'username': {
 			'required': true,
@@ -51,7 +54,7 @@ There is also the array syntax. Use this if you want to specify a custom error m
 ### Validating the rules
 
 After you have the rules, you can validate data against the rules by calling [Stonewall.validate](docs/methods.md#stonewallvalidateoptions). Pass in the attributes & rules, and also callbacks for when the validation is complete.
-	
+
 	data = {
 		'first_name': '',
 		'last_name': '2',
@@ -82,7 +85,7 @@ After you have the rules, you can validate data against the rules by calling [St
 			console.log('Validation failed, errors:', errs);
 		}
 	});
-	
+
 ## Validated nested properties
 
 Validated nested properties is trivial with Stonewall. Say you have an object like:
@@ -92,7 +95,7 @@ Validated nested properties is trivial with Stonewall. Say you have an object li
 			cvc: 13
 		}
 	}
-	
+
 When this data is validated, it will be flattened to the following:
 
 	obj = {
@@ -173,7 +176,7 @@ You can change some of the way the internals of Stonewall work by using [Stonewa
 	<input id="email" />
 
 And you also have validation rules like:
-	
+
 	rules = {
 		'required' : true
 	}
@@ -182,7 +185,7 @@ And you also have validation rules like:
 When email becomes invalid, showError is called.
 
 	$("#email").showError({ 'message': 'Email is required' })
-	
+
 If you don't configure `showError` it will do the following:
 
 	$(@).addClass('error')
@@ -201,7 +204,7 @@ The default functions will get you a far way, but if you need to, they can be co
 		hideError: ->
 			# Do something here
 	)
-	
+
 ## Built in rules
 
 ### required
@@ -216,7 +219,7 @@ Specifies if a value is required or not.
 ### minLength
 
 Value must meet the mininum length to pass.
-	
+
 	rules = {
 		'name': {
 			'minLength': 3
@@ -226,7 +229,7 @@ Value must meet the mininum length to pass.
 ### maxLength
 
 Value cannot exceed this length.
-	
+
 	rules = {
 		'name': {
 			'maxLength': 10
@@ -236,7 +239,7 @@ Value cannot exceed this length.
 ### rangeLength
 
 Value must be in between this length.
-	
+
 	rules = {
 		'username': {
 			rangeLength: [6, 20]
@@ -246,7 +249,7 @@ Value must be in between this length.
 ### length
 
 Must be exactly this length.
-	
+
 	rules = {
 		'address': {
 			length: 12
@@ -256,7 +259,7 @@ Must be exactly this length.
 ## equalTo
 
 Value must equal this other value.
-	
+
 	rules = {
 		'password_confirm': {
 			equalTo: 'password'
@@ -266,7 +269,7 @@ Value must equal this other value.
 ## pattern
 
 Value must match this pattern. You can use a built in pattern, your specify your own.
-	
+
 	rules = {
 		'username': {
 			pattern: /^[.\w-]+$/
@@ -296,17 +299,17 @@ Alternatively, you can return a deffered object. If the function returns a deffe
 			});
 		}
 	};
-	
+
 	rules = {
 		'username': {
 			fn: 'validateUnique'
 		}
 	};
-	
+
 	data = {
 		'username': 'test'
 	};
-	
+
 	Stonewall.validate({
 		resource: resource,
 		attributes: data,
