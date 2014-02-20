@@ -19,7 +19,7 @@ Stonewall is a simple Javascript validation framework. The goal of the framework
 * [Methods](docs/methods.md)
 
 ## License
-form-helpers is available under the [MIT License](LICENSE.md).
+Available under the [MIT License](LICENSE.md).
 
 ## Basic Setup
 
