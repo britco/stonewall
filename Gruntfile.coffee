@@ -28,6 +28,8 @@ module.exports = (grunt) ->
 					'<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js': modules
 		uglify:
 			coffee:
+				files:
+					'<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js': '<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js'
 				options:
 					mangle: false
 					compress: false
@@ -61,20 +63,17 @@ module.exports = (grunt) ->
 
 	# Tasks
 	# =====
+	grunt.registerTask 'copy', ->
+		done = this.async()
+		fs = require('fs')
+		src = "./#{pkg.distDirectory}/#{pkg.name}-latest.js"
+		dest = "./#{pkg.distDirectory}/#{pkg.name}-#{pkg.version}.js"
+		fs.createReadStream(src).pipe(ws = fs.createWriteStream(dest))
+
+		ws.on "close", ->
+			grunt.log.write("File \"#{dest}\" created.")
+			done()
+
+		return
 	grunt.registerTask 'build', ->
-		# Build for release
-		files = grunt.config('coffee.compile.files')
-
-		for filename, filevalues of files
-			break
-
-		grunt.config.set 'uglify.coffee.files', {
-			'<%= pkg.distDirectory %>/<%= pkg.name %>-<%= pkg.version %>.js': '<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js'
-		}
-
-		grunt.registerTask 'after:build', ->
-			# Rebuild 'latest' version now
-			grunt.config.set 'uglify.coffee.files', files
-			grunt.task.run 'coffee:compile'
-
-		grunt.task.run 'coffee:compile', 'umd:coffee', 'uglify:coffee', 'after:build'
+		grunt.task.run 'coffee:compile', 'umd:coffee', 'uglify:coffee', 'copy'
