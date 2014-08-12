@@ -2,7 +2,7 @@
   "author": "",
   "name": "Stonewall",
   "description": "",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "homepage": "",
   "repository": {
     "type": "git",
@@ -12,6 +12,7 @@
     "node": "~0.6.10 || 0.8 || 0.9"
   },
   "distDirectory": "dist",
+  "main": "dist/Stonewall-0.2.0.js",
   "devDependencies": {
     "grunt": "0.4.x",
     "grunt-bower-task": "0.1.x",

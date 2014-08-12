@@ -32,7 +32,6 @@ module.exports = (grunt) ->
 					mangle: false
 					compress: false
 					beautify: true
-					wrap: 'globals'
 					preserveComments: 'some'
 					banner: '''
 					/*!
@@ -69,17 +68,13 @@ module.exports = (grunt) ->
 		for filename, filevalues of files
 			break
 
-		grunt.config.set 'coffee.compile.options.bare', true
-
 		grunt.config.set 'uglify.coffee.files', {
 			'<%= pkg.distDirectory %>/<%= pkg.name %>-<%= pkg.version %>.js': '<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js'
 		}
 
 		grunt.registerTask 'after:build', ->
 			# Rebuild 'latest' version now
-			grunt.config.set 'coffee.compile.options.bare', false
 			grunt.config.set 'uglify.coffee.files', files
 			grunt.task.run 'coffee:compile'
-			grunt.task.run 'umd:coffee'
 
-		grunt.task.run 'coffee:compile', 'uglify:coffee', 'after:build'
+		grunt.task.run 'coffee:compile', 'umd:coffee', 'uglify:coffee', 'after:build'

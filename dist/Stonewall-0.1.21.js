@@ -2,7 +2,8 @@
  * Stonewall
  * @author Paul Dufour
  * @company Brit + Co
- */(function(exports, global) {
+ */
+(function(exports, global) {
     global["globals"] = exports;
     var Stonewall;
     window.Stonewall = Stonewall = {};
@@ -335,7 +336,7 @@
                         ruleResolved();
                     } else {
                         result = (_ref1 = rule.fn).call.apply(_ref1, [ ctx ].concat(__slice.call(args)));
-                        if (rule.name === "fn" && ((result != null ? result.promise : void 0) != null && $.isFunction(result.promise))) {
+                        if (rule.name === "fn" && (result != null ? result.promise : void 0) != null && $.isFunction(result.promise)) {
                             onSucccess = function() {
                                 return ruleResolved();
                             };
@@ -451,39 +452,32 @@
     Stonewall.Plugins.Rivets = plugin = {
         options: {
             showError: function(options) {
-                var $input, input_position;
                 if (options == null) {
                     options = {};
                 }
                 if (!(options.message != null)) {
                     return false;
                 }
-                $input = $(this);
-                input_position = $(this).position();
                 if (!$(this).next(".msg").length) {
                     $(this).after('<span class="msg"></span>');
                 }
-                $(this).addClass("error").removeClass("success").attr("data-error", options.message || "").nextAll(".msg").each(function() {
-                    $(this).removeClass("tooltip-success");
-                    $(this).addClass("tooltip-error");
+                $(this).addClass("error").removeClass("valid").attr("data-error", options.message || "").nextAll(".msg").each(function() {
+                    $(this).removeClass("valid");
+                    $(this).addClass("error");
                     $(this).text(options.message);
-                    plugin.centerMessage($(this), $input);
                     return $(this).fadeIn();
                 });
             },
             hideError: function(options) {
-                var input;
                 if (options == null) {
                     options = {};
                 }
                 if (!$(this).next(".msg").length) {
                     $(this).after('<span class="msg"></span>');
                 }
-                input = $(this);
-                $(this).removeClass("error").addClass("success").removeAttr("data-error").nextAll(".msg").each(function() {
-                    $(this).removeClass("tooltip-error");
-                    $(this).addClass("tooltip-success");
-                    plugin.centerMessage($(this), input);
+                $(this).removeClass("error").addClass("valid").removeAttr("data-error").nextAll(".msg").each(function() {
+                    $(this).removeClass("error");
+                    $(this).addClass("valid");
                     if (_.isString(options.message) && (options != null ? options.message : void 0) != null) {
                         return $(this).text(options.message);
                     } else {
@@ -494,18 +488,6 @@
         },
         status: {
             "initial-keydown": true
-        },
-        centerMessage: function($msg, $input) {
-            var top;
-            if ($input.is("textarea")) {
-                top = $input.position().top;
-            } else {
-                top = ($input.outerHeight() - $msg.outerHeight()) / 2;
-                top += $input.position().top;
-                top = Math.ceil(top);
-                top += "px";
-            }
-            return $msg.css("top", top);
         },
         activate: function() {
             _.extend(rivets.binders.value, this);

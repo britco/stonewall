@@ -1,15 +1,3 @@
-(function(root, factory) {
-    if(typeof exports === 'object') {
-        module.exports = factory(require('underscore'), require('backbone'), require('rivets'));
-    }
-    else if(typeof define === 'function' && define.amd) {
-        define(['underscore', 'backbone', 'rivets'], factory);
-    }
-    else {
-        factory(root._, root.Backbone, root.rivets);
-    }
-}(this, function(_, Backbone, rivets) {
-
 
 /*
  Stonewall
@@ -843,6 +831,3 @@
   }
 
 }).call(this);
-
-
-}));
