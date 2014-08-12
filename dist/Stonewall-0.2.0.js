@@ -694,6 +694,7 @@
                 }
             }
         };
+        rivets._stonewall = true;
     }).call(this);
     (function() {
         if (typeof rivets !== "undefined" && rivets !== null) {
