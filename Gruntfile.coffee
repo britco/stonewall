@@ -40,8 +40,16 @@ module.exports = (grunt) ->
 					 * @author Paul Dufour
 					 * @company Brit + Co
 					 */
-
 					 '''
+		umd:
+			coffee:
+				src: '<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js'
+				dest: '<%= pkg.distDirectory %>/<%= pkg.name %>-latest.js'
+				deps:
+					default: ['_','Backbone','rivets']
+					amd: ['underscore', 'backbone', 'rivets'],
+					cjs: ['underscore', 'backbone', 'rivets'],
+					global: ['_', 'Backbone', 'rivets'],
 		watch:
 			coffee:
 				files: ['src/*.coffee', 'src/**/*.coffee']
@@ -72,5 +80,6 @@ module.exports = (grunt) ->
 			grunt.config.set 'coffee.compile.options.bare', false
 			grunt.config.set 'uglify.coffee.files', files
 			grunt.task.run 'coffee:compile'
+			grunt.task.run 'umd:coffee'
 
 		grunt.task.run 'coffee:compile', 'uglify:coffee', 'after:build'

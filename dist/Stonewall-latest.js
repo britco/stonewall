@@ -1,3 +1,15 @@
+(function(root, factory) {
+    if(typeof exports === 'object') {
+        module.exports = factory(require('underscore'), require('backbone'), require('rivets'));
+    }
+    else if(typeof define === 'function' && define.amd) {
+        define(['underscore', 'backbone', 'rivets'], factory);
+    }
+    else {
+        factory(root._, root.Backbone, root.rivets);
+    }
+}(this, function(_, Backbone, rivets) {
+
 
 /*
  Stonewall
@@ -599,33 +611,26 @@
           $(this).after('<span class="msg"></span>');
         }
         $(this).addClass('error').removeClass('success').attr('data-error', options.message || '').nextAll('.msg').each(function() {
-          var marginTop, top;
           $(this).removeClass('tooltip-success');
           $(this).addClass('tooltip-error');
           $(this).text(options.message);
-          if ($input.is('textarea')) {
-            top = input_position.top;
-          } else {
-            top = '50%';
-            marginTop = ($(this).outerHeight() / -2) + 'px';
-          }
-          $(this).css({
-            'top': top,
-            'margin-top': marginTop
-          });
+          plugin.centerMessage($(this), $input);
           return $(this).fadeIn();
         });
       },
       hideError: function(options) {
+        var input;
         if (options == null) {
           options = {};
         }
         if (!$(this).next('.msg').length) {
           $(this).after('<span class="msg"></span>');
         }
+        input = $(this);
         $(this).removeClass('error').addClass('success').removeAttr('data-error').nextAll('.msg').each(function() {
           $(this).removeClass('tooltip-error');
           $(this).addClass('tooltip-success');
+          plugin.centerMessage($(this), input);
           if (_.isString(options.message) && ((options != null ? options.message : void 0) != null)) {
             return $(this).text(options.message);
           } else {
@@ -636,6 +641,18 @@
     },
     status: {
       'initial-keydown': true
+    },
+    centerMessage: function($msg, $input) {
+      var top;
+      if ($input.is('textarea')) {
+        top = $input.position().top;
+      } else {
+        top = ($input.outerHeight() - $msg.outerHeight()) / 2;
+        top += $input.position().top;
+        top = Math.ceil(top);
+        top += 'px';
+      }
+      return $msg.css('top', top);
     },
     activate: function() {
       _.extend(rivets.binders.value, this);
@@ -826,3 +843,6 @@
   }
 
 }).call(this);
+
+
+}));
