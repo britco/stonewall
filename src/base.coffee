@@ -245,7 +245,7 @@ Stonewall.Core = _.extend Stonewall,
 			intersection: true
 			error: _.wrap(options.error, (fn, args...) =>
 				# Return only the relevant errors
-				if args.length >= 0
+				if args.length >= 0 and _.isObject(args[0])
 					if _.has(args[0], attr)
 						args[0] = args[0][attr]
 
@@ -254,7 +254,7 @@ Stonewall.Core = _.extend Stonewall,
 			),
 			success: _.wrap(options.success, (fn, args...) =>
 				# Return only the relevant success message
-				if args.length >= 0
+				if args.length >= 0 and _.isObject(args[0])
 					if _.has(args[0], attr)
 						args[0] = args[0][attr]
 					else

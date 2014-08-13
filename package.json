@@ -2,7 +2,7 @@
   "author": "",
   "name": "Stonewall",
   "description": "",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
     "node": "~0.6.10 || 0.8 || 0.9"
   },
   "distDirectory": "dist",
-  "main": "dist/Stonewall-0.2.0.js",
+  "main": "dist/Stonewall-0.2.1.js",
   "browserify": {
     "transform": [
       "debowerify"
