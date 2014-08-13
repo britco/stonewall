@@ -2,14 +2,11 @@
   "author": "",
   "name": "stonewall",
   "description": "",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "",
   "repository": {
     "type": "git",
     "url": ""
-  },
-  "engines": {
-    "node": "~0.6.10 || 0.8 || 0.9"
   },
   "distDirectory": "dist",
   "main": "dist/stonewall-0.2.1.js",
