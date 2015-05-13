@@ -12,8 +12,12 @@
   "main": "dist/stonewall-0.2.1.js",
   "browserify": {
     "transform": [
+      "browserify-shim",
       "debowerify"
     ]
+  },
+  "browserify-shim": {
+    "underscore": "global:_"
   },
   "devDependencies": {
     "grunt": "0.4.x",
@@ -28,5 +32,8 @@
     "grunt-mocha": "0.2.x",
     "grunt-umd": "^1.7.4",
     "grunt-urequire": "git://github.com/concordusapps/grunt-urequire"
+  },
+  "dependencies": {
+    "browserify-shim": "git://github.com/britco/browserify-shim.git#66a6dae4954f6cece31446555937750585abc113"
   }
 }
